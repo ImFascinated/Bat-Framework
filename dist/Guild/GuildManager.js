@@ -41,26 +41,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var Guild_1 = __importDefault(require("./Guild"));
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var GuildManager = /** @class */ (function () {
-    function GuildManager() {
+    function GuildManager(instance) {
         var _this = this;
         this._guilds = new Map();
         setInterval(function () {
             var before = Date.now();
-            console.log("BatFramework > Saving " + _this._guilds.size + " guilds.");
+            console.log("BatFramework > Saving " + _this._guilds.size + " guilds");
             _this._guilds.forEach(function (guild) { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, guild.save(true)];
+                        case 0: return [4 /*yield*/, guild.save()];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];
                     }
                 });
             }); });
-            console.log("BatFramework > Saved guilds. (took: " + (Date.now() - before) + "ms)");
-        }, 300000); // 5 Mins
+            console.log("BatFramework > Saved guilds (took: " + (Date.now() - before) + "ms)");
+        }, instance.autoSaveInterval);
     }
-    GuildManager.prototype.loadGuild = function (id) {
+    GuildManager.prototype.loadGuild = function (instance, id) {
         return __awaiter(this, void 0, void 0, function () {
             var data, guild;
             return __generator(this, function (_a) {
@@ -69,7 +69,7 @@ var GuildManager = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         if (!(data === undefined)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.createGuild(id)];
+                        return [4 /*yield*/, this.createGuild(instance, id)];
                     case 2:
                         _a.sent();
                         return [4 /*yield*/, GuildSchema_1.default.findOne({ id: id })];
@@ -89,20 +89,20 @@ var GuildManager = /** @class */ (function () {
             });
         });
     };
-    GuildManager.prototype.createGuild = function (id) {
+    GuildManager.prototype.createGuild = function (instance, id) {
         return __awaiter(this, void 0, void 0, function () {
             var guild;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this._guilds.has(id)) {
-                            this.loadGuild(id);
+                            this.loadGuild(instance, id);
                         }
                         if (this._guilds.has(id)) {
                             return [2 /*return*/];
                         }
                         guild = new Guild_1.default(id);
-                        guild.setData('prefix', '!');
+                        guild.setData('prefix', instance.defaultPrefix);
                         this._guilds.set(id, guild);
                         return [4 /*yield*/, GuildSchema_1.default.findOne({ id: id }, function (err, data) {
                                 if (err)

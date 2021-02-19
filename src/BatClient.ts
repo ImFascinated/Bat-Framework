@@ -12,20 +12,23 @@ type Options = {
 	commandsDirectory?: string,
 	eventsDirectory?: string,
 	showWarns?: boolean,
+	autoSaveInterval?: number,
 	databaseOptions?: {}
 }
 
 class BatClient extends EventEmitter {
 	private _showWarns: boolean = true;
+	private _defaultPrefix: string = '!';
 	private _eventsDirectory: string = 'events';
 	private _eventHandler: EventHandler;
 	private _commandsDirectory: string = 'commands';
 	private _commandHandler: CommandHandler;
 	private _utils: Utils;
 	private _guildManager: GuildManager;
+	private _autoSaveInterval: number = 300000;
 
-	private _mongo = ''
-	private _mongoConnection: Connection | null = null
+	private _mongo = '';
+	private _mongoConnection: Connection | null = null;
 
 	constructor(client: Client, options: Options) {
 		super();
@@ -37,6 +40,7 @@ class BatClient extends EventEmitter {
 			showWarns = true,
 			commandsDirectory = 'commands',
 			eventsDirectory = 'events',
+			autoSaveInterval = 300000,
 			databaseOptions,
 		} = options;
 
@@ -54,7 +58,9 @@ class BatClient extends EventEmitter {
 
 		this._eventHandler = new EventHandler(this, client);
 		this._commandHandler = new CommandHandler(this, client);
-		this._guildManager = new GuildManager();
+		this._guildManager = new GuildManager(this);
+
+		this._autoSaveInterval = autoSaveInterval;
 
 		this._utils = new Utils();
 
@@ -78,6 +84,14 @@ class BatClient extends EventEmitter {
 		return this._showWarns;
 	}
 
+	public get defaultPrefix(): string {
+		return this._defaultPrefix;
+	}
+
+	public setDefaultPrefix(prefix: string) {
+		this._defaultPrefix = prefix;
+	}
+
 	public get eventsDirectory(): string {
 		return this._eventsDirectory;
 	}
@@ -96,6 +110,10 @@ class BatClient extends EventEmitter {
 
 	public get guildManager(): GuildManager {
 		return this._guildManager;
+	}
+
+	public get autoSaveInterval(): number {
+		return this._autoSaveInterval;
 	}
 
 	public get utils(): Utils {

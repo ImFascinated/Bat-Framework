@@ -21,11 +21,11 @@ class CommandHandler {
 		client.on('message', async (message: Message) => {
 			if (!message.guild || message.author.bot) return;
 
-			await instance.guildManager.createGuild(message.guild.id);
+			await instance.guildManager.createGuild(instance, message.guild.id);
 
 			let guildData: Guild | undefined = instance.guildManager.getGuild(message.guild.id);
 			if (guildData === undefined) {
-				await instance.guildManager.createGuild(message.guild.id);
+				await instance.guildManager.createGuild(instance, message.guild.id);
 				guildData = instance.guildManager.getGuild(message.guild.id);
 			}
 

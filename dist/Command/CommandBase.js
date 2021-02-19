@@ -50,7 +50,7 @@ var CommandBase = /** @class */ (function () {
     CommandBase.prototype.run = function (message, args, guildData) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                throw new Error("Command " + this._name + " doesn't provide a execute method!");
+                throw new Error("Command " + this._name + " doesn't provide a execute method");
             });
         });
     };

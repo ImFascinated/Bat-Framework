@@ -7,6 +7,7 @@ const Bot = new Client(client, {
 	commandsDirectory: 'Commands',
 	eventsDirectory: 'Events',
 	showWarns: true,
+	autoSaveInterval: 300000,
 	databaseOptions: {
 		keepAlive: true,
 		useNewUrlParser: true,
@@ -15,6 +16,7 @@ const Bot = new Client(client, {
 	}
 });
 Bot.setMongoPath(process.env.MONGO_URI);
+Bot.setDefaultPrefix('?');
 
 Bot.on('databaseConnected', () => {
 	console.log('Database connected!')

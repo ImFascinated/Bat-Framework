@@ -56,12 +56,12 @@ var CommandHandler = /** @class */ (function () {
                     case 0:
                         if (!message.guild || message.author.bot)
                             return [2 /*return*/];
-                        return [4 /*yield*/, instance.guildManager.createGuild(message.guild.id)];
+                        return [4 /*yield*/, instance.guildManager.createGuild(instance, message.guild.id)];
                     case 1:
                         _c.sent();
                         guildData = instance.guildManager.getGuild(message.guild.id);
                         if (!(guildData === undefined)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, instance.guildManager.createGuild(message.guild.id)];
+                        return [4 /*yield*/, instance.guildManager.createGuild(instance, message.guild.id)];
                     case 2:
                         _c.sent();
                         guildData = instance.guildManager.getGuild(message.guild.id);
@@ -115,7 +115,7 @@ var CommandHandler = /** @class */ (function () {
             }
             if (!silentLoad) {
                 if (_this._commands.size > 0) {
-                    console.log("BatFramework > Loaded " + _this._commands.size + " commands.");
+                    console.log("BatFramework > Loaded " + _this._commands.size + " commands");
                 }
             }
         });

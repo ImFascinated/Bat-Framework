@@ -91,7 +91,7 @@ var Guild = /** @class */ (function () {
                         data.markModified('data');
                         data.save();
                         if (log) {
-                            console.log("BatFramework > Force saved guild \"" + this._id + ".\"");
+                            console.log("BatFramework > Force saved guild \"" + this._id + "\"");
                         }
                         return [2 /*return*/];
                 }

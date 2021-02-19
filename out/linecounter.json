@@ -1,0 +1,254 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\Users\\Liam Miles\\Desktop\\Projects\\Bat Bot\\Bat Framework",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-02-19 23:16:09",
+            "filesum": 35,
+            "codesum": 2272,
+            "commentsum": 83,
+            "blanksum": 128,
+            "statistics": {
+                ".json": {
+                    "code": 725,
+                    "comment": 50,
+                    "blank": 7
+                },
+                ".js": {
+                    "code": 1040,
+                    "comment": 17,
+                    "blank": 12
+                },
+                ".ts": {
+                    "code": 423,
+                    "comment": 2,
+                    "blank": 93
+                },
+                "": {
+                    "code": 16,
+                    "comment": 1,
+                    "blank": 0
+                },
+                ".md": {
+                    "code": 68,
+                    "comment": 13,
+                    "blank": 16
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 1,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": ".npmignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 212,
+                    "comment": 0,
+                    "filename": "dist\\BatClient.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 76,
+                    "comment": 0,
+                    "filename": "dist\\BatFramework.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 87,
+                    "comment": 0,
+                    "filename": "dist\\Command\\CommandBase.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 150,
+                    "comment": 1,
+                    "filename": "dist\\Command\\CommandHandler.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "dist\\Database\\Database.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 82,
+                    "comment": 0,
+                    "filename": "dist\\Database\\Mongo.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "dist\\Event\\EventBase.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 58,
+                    "comment": 0,
+                    "filename": "dist\\Event\\Eventhandler.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 103,
+                    "comment": 0,
+                    "filename": "dist\\Guild\\Guild.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 130,
+                    "comment": 1,
+                    "filename": "dist\\Guild\\GuildManager.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "dist\\Guild\\GuildSchema.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "dist\\index.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "dist\\Utils\\Utils.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 683,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "blank": 16,
+                    "code": 68,
+                    "comment": 13,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 27,
+                    "code": 105,
+                    "comment": 0,
+                    "filename": "src\\BatClient.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src\\Command\\CommandBase.ts"
+                },
+                {
+                    "blank": 19,
+                    "code": 86,
+                    "comment": 1,
+                    "filename": "src\\Command\\CommandHandler.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src\\Database\\Mongo.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src\\Event\\EventBase.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src\\Event\\EventHandler.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 39,
+                    "comment": 0,
+                    "filename": "src\\Guild\\Guild.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 54,
+                    "comment": 1,
+                    "filename": "src\\Guild\\GuildManager.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src\\Guild\\GuildSchema.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "src\\index.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\Utils\\Utils.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 20,
+                    "comment": 6,
+                    "filename": "test\\Commands\\SetPrefixCommand.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 10,
+                    "comment": 5,
+                    "filename": "test\\events\\message.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 9,
+                    "comment": 4,
+                    "filename": "test\\events\\ready.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "test\\index.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 13,
+                    "comment": 50,
+                    "filename": "tsconfig.json"
+                }
+            ]
+        }
+    ]
+}

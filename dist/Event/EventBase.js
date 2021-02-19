@@ -12,7 +12,7 @@ var EventBase = /** @class */ (function () {
         for (var _i = 1; _i < arguments.length; _i++) {
             args[_i - 1] = arguments[_i];
         }
-        throw new Error("The event " + this._type + " is missing the run method.");
+        throw new Error("The event " + this._type + " is missing the run method");
     };
     Object.defineProperty(EventBase.prototype, "type", {
         get: function () {

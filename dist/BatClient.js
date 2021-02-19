@@ -81,14 +81,16 @@ var BatClient = /** @class */ (function (_super) {
     function BatClient(client, options) {
         var _this = _super.call(this) || this;
         _this._showWarns = true;
+        _this._defaultPrefix = '!';
         _this._eventsDirectory = 'events';
         _this._commandsDirectory = 'commands';
+        _this._autoSaveInterval = 300000;
         _this._mongo = '';
         _this._mongoConnection = null;
         if (!client) {
             throw new Error('You must provide a Discord JS client as the first argument');
         }
-        var _a = options.showWarns, showWarns = _a === void 0 ? true : _a, _b = options.commandsDirectory, commandsDirectory = _b === void 0 ? 'commands' : _b, _c = options.eventsDirectory, eventsDirectory = _c === void 0 ? 'events' : _c, databaseOptions = options.databaseOptions;
+        var _a = options.showWarns, showWarns = _a === void 0 ? true : _a, _b = options.commandsDirectory, commandsDirectory = _b === void 0 ? 'commands' : _b, _c = options.eventsDirectory, eventsDirectory = _c === void 0 ? 'events' : _c, _d = options.autoSaveInterval, autoSaveInterval = _d === void 0 ? 300000 : _d, databaseOptions = options.databaseOptions;
         if (module && require.main) {
             var path = require.main.path;
             if (path) {
@@ -101,7 +103,8 @@ var BatClient = /** @class */ (function (_super) {
         _this._eventsDirectory = eventsDirectory;
         _this._eventHandler = new EventHandler_1.default(_this, client);
         _this._commandHandler = new CommandHandler_1.default(_this, client);
-        _this._guildManager = new GuildManager_1.default();
+        _this._guildManager = new GuildManager_1.default(_this);
+        _this._autoSaveInterval = autoSaveInterval;
         _this._utils = new Utils_1.default();
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -115,7 +118,7 @@ var BatClient = /** @class */ (function (_super) {
                         return [3 /*break*/, 3];
                     case 2:
                         if (showWarns) {
-                            console.warn('WOKCommands > No MongoDB connection URI provided.');
+                            console.warn('WOKCommands > No MongoDB connection URI provided');
                         }
                         this.emit('databaseConnected', null, '');
                         _a.label = 3;
@@ -123,7 +126,7 @@ var BatClient = /** @class */ (function (_super) {
                 }
             });
         }); }, 500);
-        console.log('BatFramework > Successfully initialized.');
+        console.log('BatFramework > Successfully initialized');
         return _this;
     }
     Object.defineProperty(BatClient.prototype, "showWarns", {
@@ -133,6 +136,16 @@ var BatClient = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(BatClient.prototype, "defaultPrefix", {
+        get: function () {
+            return this._defaultPrefix;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    BatClient.prototype.setDefaultPrefix = function (prefix) {
+        this._defaultPrefix = prefix;
+    };
     Object.defineProperty(BatClient.prototype, "eventsDirectory", {
         get: function () {
             return this._eventsDirectory;
@@ -164,6 +177,13 @@ var BatClient = /** @class */ (function (_super) {
     Object.defineProperty(BatClient.prototype, "guildManager", {
         get: function () {
             return this._guildManager;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(BatClient.prototype, "autoSaveInterval", {
+        get: function () {
+            return this._autoSaveInterval;
         },
         enumerable: false,
         configurable: true
