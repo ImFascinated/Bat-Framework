@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var Guild_1 = __importDefault(require("./Guild"));
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var GuildManager = /** @class */ (function () {
-    function GuildManager(instance, client) {
+    function GuildManager() {
         var _this = this;
         this._guilds = new Map();
         setInterval(function () {
@@ -50,7 +50,7 @@ var GuildManager = /** @class */ (function () {
                 guild.save();
             });
             console.log("BatFramework > Saved guilds.");
-        }, 15000);
+        }, 300000); // 5 Mins
     }
     GuildManager.prototype.loadGuild = function (id) {
         return __awaiter(this, void 0, void 0, function () {
@@ -73,7 +73,6 @@ var GuildManager = /** @class */ (function () {
                             return [2 /*return*/];
                         guild = new Guild_1.default(id);
                         data.get('data').forEach(function (data) {
-                            console.log(data);
                             guild.setData(data.key, data.value);
                         });
                         this._guilds.set(id, guild);

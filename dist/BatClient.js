@@ -101,7 +101,7 @@ var BatClient = /** @class */ (function (_super) {
         _this._eventsDirectory = eventsDirectory;
         _this._eventHandler = new EventHandler_1.default(_this, client);
         _this._commandHandler = new CommandHandler_1.default(_this, client);
-        _this._guildManager = new GuildManager_1.default(_this, client);
+        _this._guildManager = new GuildManager_1.default();
         _this._utils = new Utils_1.default();
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
