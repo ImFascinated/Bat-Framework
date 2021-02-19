@@ -76,6 +76,41 @@ module.exports = class ReadyEvent extends EventBase {
 }
 ```
 
+**Accessing and modifying guild data**
+---
+Events can be anything that is called from the DiscordJS Client.
+
+```js
+const { Message } = require('discord.js');
+const { CommandBase } = require('@imfascinated/bat-framework');
+
+module.exports = class MessageEvent extends CommandBase {
+    constructor() {
+        super({
+            name: 'setprefix',
+            description: 'Simple set prefix command.',
+            aliases: ['prefix']
+        });
+    }
+
+    /**
+     * @param {Message} message 
+     * @param {string[]} args 
+     */
+
+    async run(message, args, guildData) {
+        if (args.length < 1) {
+            // A simple example below on how ro retrieve guild data.
+            return message.channel.send('Current prefix: ' + guildData.getData('prefix'))
+        }
+        const prefix = args[0];
+        // A simple example below is how to set guild data.
+        await guildData.setData('prefix', prefix).then(data => {
+            message.channel.send(`Your guilds prefix has been updated to ${data.value}`);
+        });
+    }
+}
+```
 **Support & Feature Requests**
 ---
 This package is looking for feedback and ideas to help cover more use cases. If you have any ideas feel free to share them me on discord at Fascinated#4735
