@@ -1,3 +1,5 @@
+import BatClient from "../BatClient";
+
 type Options = {
 	type?: string,
 	once: boolean,
@@ -19,7 +21,7 @@ class EventBase {
 		this._once = once;
 	}
 
-	public run(...args: any) {
+	public run(instance: BatClient, ...args: any) {
 		throw new Error(`The event ${this._type} is missing the run method.`);
 	}
 

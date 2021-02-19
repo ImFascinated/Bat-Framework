@@ -7,10 +7,10 @@ var EventBase = /** @class */ (function () {
         this._type = type;
         this._once = once;
     }
-    EventBase.prototype.run = function () {
+    EventBase.prototype.run = function (instance) {
         var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
         }
         throw new Error("The event " + this._type + " is missing the run method.");
     };

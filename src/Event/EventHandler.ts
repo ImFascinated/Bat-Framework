@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 import EventBase from "./EventBase";
-import BatFramework from '../BatClient';
+import BatClient from '../BatClient';
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
 import path from 'path';
@@ -13,11 +13,11 @@ type Options = {
 class EventHandler {
 	private _events: Map<String, EventBase> = new Map();
 
-	constructor(instance: BatFramework, client: Client) {
+	constructor(instance: BatClient, client: Client) {
 		this.init(instance, client, { directory: instance.eventsDirectory });
 	}
 
-	private init(instance: BatFramework, client: Client, options: Options) {
+	private init(instance: BatClient, client: Client, options: Options) {
 		let {
 			directory,
 			silentLoad = false
@@ -32,17 +32,22 @@ class EventHandler {
 				const event = new File(client, name);
 				if (!(event instanceof EventBase)) throw new TypeError(`Event ${name} does not extend EventBase`);
 				if (name === undefined) continue;
-				this.registerEvent(client, event, name);
+				this.registerEvent(instance, client, event, name);
 			}
 			if (!silentLoad) {
-				console.log(`BatFramework > Loaded ${this._events.size} events.`);
+				if (this._events.size > 0) {
+					console.log(`BatFramework > Loaded ${this._events.size} events.`);
+				}
 			}
 		});
 	}
 
-	public registerEvent(client: any, event: EventBase, name: string) {
+	public registerEvent(instance: BatClient, client: any, event: EventBase, name: string) {
 		this._events.set(name, event);
-		client[event.type](name, (...args: any) => event.run(...args));
+		console.log(`BatFramework > Registred event ${name}`)
+		client[event.type](name, (...args: any) => {
+			event.run(instance, ...args)
+		});
 	}
 }
 

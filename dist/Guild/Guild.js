@@ -35,53 +35,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var CommandBase = /** @class */ (function () {
-    function CommandBase(options) {
-        this._name = '';
-        this._aliases = [];
-        this._description = '';
-        this._category = '';
-        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d;
-        this._name = name;
-        this._aliases = aliases;
-        this._description = description;
-        this._category = category;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var GuildSchema_1 = __importDefault(require("./GuildSchema"));
+var Guild = /** @class */ (function () {
+    function Guild(id) {
+        this._data = new Map();
+        this._id = id;
     }
-    CommandBase.prototype.run = function (message, args, guildData) {
+    Object.defineProperty(Guild.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Guild.prototype.setData = function (key, value) {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
-                throw new Error("Command " + this._name + " doesn't provide a execute method!");
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        _this._data.set(key, value);
+                        resolve({ key: key, value: value });
+                    })];
             });
         });
     };
-    Object.defineProperty(CommandBase.prototype, "name", {
-        get: function () {
-            return this._name;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(CommandBase.prototype, "aliases", {
-        get: function () {
-            return this._aliases;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(CommandBase.prototype, "description", {
-        get: function () {
-            return this._description;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(CommandBase.prototype, "category", {
-        get: function () {
-            return this._category;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return CommandBase;
+    Guild.prototype.getData = function (id) {
+        return this._data.get(id);
+    };
+    Guild.prototype.save = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, updateData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, GuildSchema_1.default.findOne({ id: this._id })];
+                    case 1:
+                        data = _a.sent();
+                        updateData = [];
+                        this._data.forEach(function (key, value) {
+                            updateData.push({ key: key, value: value });
+                        });
+                        data.data = updateData;
+                        data.markModified('data');
+                        data.save();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return Guild;
 }());
-module.exports = CommandBase;
+module.exports = Guild;

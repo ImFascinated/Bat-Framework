@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import Guild from '../Guild/Guild';
 
 type Options = {
 	name?: string,
@@ -27,7 +28,7 @@ class CommandBase {
 		this._category = category;
 	}
 
-	async run(message: Message, args: string[]) {
+	async run(message: Message, args: string[], guildData: Guild) {
 		throw new Error(`Command ${this._name} doesn't provide a execute method!`);
 	}
 

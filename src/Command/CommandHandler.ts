@@ -4,6 +4,7 @@ const { promisify } = require('util');
 const glob = promisify(require('glob'));
 import path from 'path';
 import CommandBase from './CommandBase';
+import Guild from '../Guild/Guild';
 
 type Options = {
 	directory?: string,
@@ -17,16 +18,26 @@ class CommandHandler {
 		this.init(instance, client, { directory: instance.commandsDirectory });
 
 		// TODO: Move this to a built-in event.
-		client.on('message', (message: Message) => {
+		client.on('message', async (message: Message) => {
 			if (!message.guild || message.author.bot) return;
 
-			const prefix = '!'; // TODO: Add guild prefixes
+			await instance.guildManager.createGuild(message.guild.id);
+
+			let guildData: Guild | undefined = instance.guildManager.getGuild(message.guild.id);
+			if (guildData === undefined) {
+				await instance.guildManager.createGuild(message.guild.id);
+				guildData = instance.guildManager.getGuild(message.guild.id);
+			}
+
+			if (guildData === undefined) return;
+			const prefix = guildData.getData('prefix')?.toString();
+			if (prefix === undefined) return;
 			if (!message.content.startsWith(prefix)) return;
 
 			const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
-			const command = this.getCommandByName(cmd);
+			const command: CommandBase | undefined = this.getCommandByName(cmd);
 			if (command) {
-				command.run(message, args);
+				command.run(message, args, guildData);
 			}
 		});
 	}
@@ -67,7 +78,9 @@ class CommandHandler {
 				this.registerCommand(command, command.name.toLowerCase());
 			}
 			if (!silentLoad) {
-				console.log(`BatFramework > Loaded ${this._commands.size} commands.`);
+				if (this._commands.size > 0) {
+					console.log(`BatFramework > Loaded ${this._commands.size} commands.`);
+				}
 			}
 		});
 	}
@@ -81,9 +94,11 @@ class CommandHandler {
 		this._commands.forEach(command => {
 			if (toReturn) return toReturn;
 			if (command.name === name) toReturn = command;
-			command.aliases.forEach(alias => {
-				if (alias === name) toReturn = command;
-			});
+			if (command.aliases) {
+				command.aliases.forEach(alias => {
+					if (alias === name) toReturn = command;
+				});
+			}
 		});
 		return toReturn;
 	}
