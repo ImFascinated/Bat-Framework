@@ -45,7 +45,6 @@ var EventHandler = /** @class */ (function () {
     };
     EventHandler.prototype.registerEvent = function (instance, client, event, name) {
         this._events.set(name, event);
-        console.log("BatFramework > Registred event " + name);
         client[event.type](name, function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {

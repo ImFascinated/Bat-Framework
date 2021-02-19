@@ -29,7 +29,7 @@ class CommandBase {
 	}
 
 	async run(message: Message, args: string[], guildData: Guild) {
-		throw new Error(`Command ${this._name} doesn't provide a execute method!`);
+		throw new Error(`Command ${this._name} doesn't provide a execute method`);
 	}
 
 	public get name(): string {

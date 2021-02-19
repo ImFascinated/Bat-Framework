@@ -22,7 +22,7 @@ class EventBase {
 	}
 
 	public run(instance: BatClient, ...args: any) {
-		throw new Error(`The event ${this._type} is missing the run method.`);
+		throw new Error(`The event ${this._type} is missing the run method`);
 	}
 
 	public get type(): string {

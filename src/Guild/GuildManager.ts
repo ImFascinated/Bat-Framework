@@ -6,11 +6,12 @@ class GuildManager {
 
 	constructor() {
 		setInterval(() => {
-			console.log(`BatFramework > Saving ${this._guilds.size} guilds.`)
-			this._guilds.forEach(guild => {
-				guild.save();
+			const before = Date.now();
+			console.log(`BatFramework > Saving ${this._guilds.size} guilds`)
+			this._guilds.forEach(async (guild) => {
+				await guild.save(true);
 			});
-			console.log(`BatFramework > Saved guilds.`)
+			console.log(`BatFramework > Saved guilds (took: ${Date.now() - before}ms)`)
 		}, 300000) // 5 Mins
 	}
 
@@ -22,7 +23,7 @@ class GuildManager {
 		}
 		if (data === null) return;
 		const guild = new Guild(id);
-		data.get('data').forEach((data: { key: string; value: Object; }) => {
+		data.get('data').forEach((data: { key: string; value: Object }) => {
 			guild.setData(data.key, data.value);
 		})
 		this._guilds.set(id, guild);
@@ -48,7 +49,6 @@ class GuildManager {
 					id: id,
 					data: []
 				});
-				console.log(`Created guild: id=\`${id}\``);
 				return toSave.save();
 			}
 		});

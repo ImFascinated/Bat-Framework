@@ -5,7 +5,7 @@ require('dotenv').config()
 const client = new Discord.Client();
 const Bot = new Client(client, {
 	commandsDirectory: 'Commands',
-    eventsDirectory: 'Events',
+	eventsDirectory: 'Events',
 	showWarns: true,
 	databaseOptions: {
 		keepAlive: true,

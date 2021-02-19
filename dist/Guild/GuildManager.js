@@ -45,11 +45,19 @@ var GuildManager = /** @class */ (function () {
         var _this = this;
         this._guilds = new Map();
         setInterval(function () {
+            var before = Date.now();
             console.log("BatFramework > Saving " + _this._guilds.size + " guilds.");
-            _this._guilds.forEach(function (guild) {
-                guild.save();
-            });
-            console.log("BatFramework > Saved guilds.");
+            _this._guilds.forEach(function (guild) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, guild.save(true)];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            }); });
+            console.log("BatFramework > Saved guilds. (took: " + (Date.now() - before) + "ms)");
         }, 300000); // 5 Mins
     }
     GuildManager.prototype.loadGuild = function (id) {
@@ -104,7 +112,6 @@ var GuildManager = /** @class */ (function () {
                                         id: id,
                                         data: []
                                     });
-                                    console.log("Created guild: id=`" + id + "`");
                                     return toSave.save();
                                 }
                             })];

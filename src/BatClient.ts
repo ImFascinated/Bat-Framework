@@ -65,13 +65,13 @@ class BatClient extends EventEmitter {
 				this._mongoConnection = getMongoConnection();
 			} else {
 				if (showWarns) {
-					console.warn('WOKCommands > No MongoDB connection URI provided.');
+					console.warn('WOKCommands > No MongoDB connection URI provided');
 				}
 
 				this.emit('databaseConnected', null, '');
 			}
 		}, 500);
-		console.log('BatFramework > Successfully initialized.');
+		console.log('BatFramework > Successfully initialized');
 	}
 
 	public get showWarns(): boolean {

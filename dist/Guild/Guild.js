@@ -51,21 +51,31 @@ var Guild = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Guild.prototype.setData = function (key, value) {
+    Guild.prototype.setData = function (key, value, forceSave) {
         return __awaiter(this, void 0, void 0, function () {
+            var promise;
             var _this = this;
             return __generator(this, function (_a) {
-                return [2 /*return*/, new Promise(function (resolve, reject) {
-                        _this._data.set(key, value);
-                        resolve({ key: key, value: value });
-                    })];
+                switch (_a.label) {
+                    case 0:
+                        promise = new Promise(function (resolve, reject) {
+                            _this._data.set(key, value);
+                            resolve({ key: key, value: value });
+                        });
+                        if (!forceSave) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.save(forceSave)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, promise];
+                }
             });
         });
     };
     Guild.prototype.getData = function (id) {
         return this._data.get(id);
     };
-    Guild.prototype.save = function () {
+    Guild.prototype.save = function (log) {
         return __awaiter(this, void 0, void 0, function () {
             var data, updateData;
             return __generator(this, function (_a) {
@@ -75,11 +85,14 @@ var Guild = /** @class */ (function () {
                         data = _a.sent();
                         updateData = [];
                         this._data.forEach(function (key, value) {
-                            updateData.push({ key: key, value: value });
+                            updateData.push({ key: value, value: key });
                         });
                         data.data = updateData;
                         data.markModified('data');
                         data.save();
+                        if (log) {
+                            console.log("BatFramework > Force saved guild \"" + this._id + ".\"");
+                        }
                         return [2 /*return*/];
                 }
             });

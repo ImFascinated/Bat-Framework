@@ -36,7 +36,7 @@ class EventHandler {
 			}
 			if (!silentLoad) {
 				if (this._events.size > 0) {
-					console.log(`BatFramework > Loaded ${this._events.size} events.`);
+					console.log(`BatFramework > Loaded ${this._events.size} events`);
 				}
 			}
 		});
@@ -44,7 +44,6 @@ class EventHandler {
 
 	public registerEvent(instance: BatClient, client: any, event: EventBase, name: string) {
 		this._events.set(name, event);
-		console.log(`BatFramework > Registred event ${name}`)
 		client[event.type](name, (...args: any) => {
 			event.run(instance, ...args)
 		});

@@ -113,12 +113,19 @@ module.exports = class MessageEvent extends CommandBase {
     async run(message, args, guildData) {
         if (args.length < 1) {
             // A simple example below on how ro retrieve guild data.
-            return message.channel.send('Current prefix: ' + guildData.getData('prefix'))
+            return message.channel.send(`Your prefix: \`${guildData.getData('prefix')}\``);
         }
         const prefix = args[0];
         // A simple example below is how to set guild data.
-        await guildData.setData('prefix', prefix).then(data => {
-            message.channel.send(`Your guilds prefix has been updated to ${data.value}`);
+
+        /**
+         * Data name: 'prefix'
+         * Data: prefix
+         * Force save: true
+         */
+
+        await guildData.setData('prefix', prefix, true).then(data => {
+            message.channel.send(`Your guilds prefix has been updated to \`${data.value}\`.`);
         });
     }
 }
