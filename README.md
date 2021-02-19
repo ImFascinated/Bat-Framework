@@ -18,10 +18,22 @@ const { Client } = require('@imfascinated/bat-framework');
 const client = new Discord.Client();
 // Initialize Bat-Framework.
 const Bot = new Client(client, {
-    commandsDirectory: 'commands',
-    eventsDirectory: 'events',
-    showWarns: true // Show warnings about the bot.
+	commandsDirectory: 'Commands',
+    eventsDirectory: 'Events',
+	showWarns: true,
+	databaseOptions: {
+		keepAlive: true,
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false
+	}
 });
+Bot.setMongoPath(process.env.MONGO_URI);
+
+Bot.on('databaseConnected', () => {
+	console.log('Database connected!')
+});
+
 client.login('your token');
 ```
 
