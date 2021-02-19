@@ -13,6 +13,7 @@ After you have installed BatFramework there is a simple setup process.
 ```js
 const Discord = require('discord.js');
 const { Client } = require('@imfascinated/bat-framework');
+require('dotenv').config()
 
 // Create a discord client instance.
 const client = new Discord.Client();
