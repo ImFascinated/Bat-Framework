@@ -78,7 +78,7 @@ module.exports = class ReadyEvent extends EventBase {
 
 **Accessing and modifying guild data**
 ---
-Events can be anything that is called from the DiscordJS Client.
+Guild data can be set to anything since it's stored as an Object (key: String, value: Object)
 
 ```js
 const { Message } = require('discord.js');
