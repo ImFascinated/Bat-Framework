@@ -11,7 +11,6 @@
 # Installation
 
 **NPM**
----
 ```bash
 npm install @imfascinated/bat-framework
 ```
@@ -39,7 +38,9 @@ const Bot = new Client(client, {
         useFindAndModify: false
     }
 });
+// Set your Mongo URI path so the framework can use it.
 Bot.setMongoPath(process.env.MONGO_URI);
+// Set the bots default command prefix, it is ! by default.
 Bot.setDefaultPrefix('?');
 
 Bot.on('databaseConnected', () => {
