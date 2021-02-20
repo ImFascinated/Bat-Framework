@@ -1,7 +1,7 @@
 {
   "name": "@imfascinated/bat-framework",
-  "version": "0.0.14-DEV",
-  "description": "A simple to use discord.js framework.",
+  "version": "0.0.15-DEV",
+  "description": "A simple and powerful discord.js framework.",
   "main": "dist/index.js",
   "author": "ImFascinated",
   "license": "ISC",

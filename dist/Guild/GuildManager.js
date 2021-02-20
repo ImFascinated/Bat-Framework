@@ -42,8 +42,8 @@ var Guild_1 = __importDefault(require("./Guild"));
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var GuildManager = /** @class */ (function () {
     /**
-     * @description Constructs the {@link GuildManager} instance
-     * @param {@link BatClient} instance - The main instance for BatClient.
+     * @description Constructs the {GuildManager} instance
+     * @param {BatClient} instance - The main instance for BatClient.
      */
     function GuildManager(instance) {
         var _this = this;
@@ -66,8 +66,8 @@ var GuildManager = /** @class */ (function () {
     }
     /**
      * @description Loads the guild with the provided id into the _guild Map
-     * @param {@link BatClient} instance - The main instance for BatClient.
-     * @param {@link string} id - Guild id
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {string} id - Guild id
      * @private
      */
     GuildManager.prototype.loadGuild = function (instance, id) {
@@ -100,9 +100,9 @@ var GuildManager = /** @class */ (function () {
         });
     };
     /**
-     * @description Inserts the {@link Guild} into the database if it doesn't exist in the _guilds Map
-     * @param instance - The main instance for BatClient.
-     * @param id - Guild id
+     * @description Inserts the {Guild} into the database if it doesn't exist in the _guilds Map
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {string} id - Guild id
      */
     GuildManager.prototype.createGuild = function (instance, id) {
         return __awaiter(this, void 0, void 0, function () {
@@ -143,8 +143,9 @@ var GuildManager = /** @class */ (function () {
         });
     };
     /**
-     * @description Gets the provided guilds {@link Guild} object and then returns it
-     * @param id
+     * @description Gets the provided guilds {Guild} object and then returns it
+     * @param {string} id - Guild id
+     * @returns Guild
      */
     GuildManager.prototype.getGuild = function (id) {
         return this._guilds.get(id);

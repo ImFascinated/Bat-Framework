@@ -43,6 +43,11 @@ var glob = promisify(require('glob'));
 var path_1 = __importDefault(require("path"));
 var CommandBase_1 = __importDefault(require("./CommandBase"));
 var CommandHandler = /** @class */ (function () {
+    /**
+     * @description Constructs the {CommandHandler} instance
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {Client} client - Discord.JS client
+     */
     function CommandHandler(instance, client) {
         var _this = this;
         this._commands = new Map();
@@ -84,6 +89,13 @@ var CommandHandler = /** @class */ (function () {
             });
         }); });
     }
+    /**
+     * @description Initializes the commands, gets them ready within the {Client} and stores them into the _commands Map
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {Client} client - Discord.JS client
+     * @param {Options} options - The {Options} passed into the method
+     * @private
+     */
     CommandHandler.prototype.init = function (instance, client, options) {
         var _this = this;
         var directory = options.directory, _a = options.silentLoad, silentLoad = _a === void 0 ? false : _a;
@@ -120,11 +132,21 @@ var CommandHandler = /** @class */ (function () {
             }
         });
     };
+    /**
+     * @description Registers the {CommandBase} and adds it into the _commands Map
+     * @param {CommandBase} command - The {CommandBase} passed into the method
+     * @param {string} name - The commands name as lower case
+     */
     CommandHandler.prototype.registerCommand = function (command, name) {
         this._commands.set(name, command);
     };
+    /**
+     * @description Finds the {CommandBase} that has the provided name
+     * @param {string} name - Provided name
+     * @returns CommandBase
+     */
     CommandHandler.prototype.getCommandByName = function (name) {
-        var toReturn;
+        var toReturn = undefined;
         this._commands.forEach(function (command) {
             if (toReturn)
                 return toReturn;

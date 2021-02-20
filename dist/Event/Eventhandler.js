@@ -15,19 +15,19 @@ var glob = promisify(require('glob'));
 var path_1 = __importDefault(require("path"));
 var EventHandler = /** @class */ (function () {
     /**
-     * @description Constructs the {@link EventHandler} instance
-     * @param {@link BatClient} instance - The main instance for BatClient.
-     * @param {@link Client} client - Discord.JS client
+     * @description Constructs the {EventHandler} instance
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {Client} client - Discord.JS client
      */
     function EventHandler(instance, client) {
         this._events = new Map();
         this.init(instance, client, { directory: instance.eventsDirectory });
     }
     /**
-     * @description Initializes the events, gets them ready within the {@link Client} and stores them into the _events Map
-     * @param {@link BatClient} instance - The main instance for BatClient.
-     * @param {@link Client} client - Discord.JS client
-     * @param {@link Options} options - The {@link Options} passed into the method
+     * @description Initializes the events, gets them ready within the {Client} and stores them into the _events Map
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {Client} client - Discord.JS client
+     * @param {Options} options - The {Options} passed into the method
      * @private
      */
     EventHandler.prototype.init = function (instance, client, options) {
@@ -56,11 +56,11 @@ var EventHandler = /** @class */ (function () {
         });
     };
     /**
-     *
-     * @param {@link BatClient} instance - The main instance for BatClient.
-     * @param {@link Client} client - Discord.JS client
-     * @param {@link Event} event - The {@link Event} passed into the method
-     * @param {@link string} name - The events name
+     * @description Registers the {EventBase} and adds it to the _events Map
+     * @param {BatClient} instance - The main instance for BatClient.
+     * @param {Client} client - Discord.JS client
+     * @param {EventBase} event - The {EventBase} passed into the method
+     * @param {string} name - The events name
      */
     EventHandler.prototype.registerEvent = function (instance, client, event, name) {
         if (!event.event) {

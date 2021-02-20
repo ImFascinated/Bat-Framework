@@ -40,15 +40,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var Guild = /** @class */ (function () {
+    /**
+     * @description Constructs the {Guild} instance
+     * @param {string} id - Guild id
+     */
     function Guild(id) {
         this._data = new Map();
         this._id = id;
     }
     /**
-     * @description Sets data in the {@link Guild} object
-     * @param key - The data name (example: prefix)
-     * @param value - The data to be stored (example: !)
-     * @param forceSave - Whether to force save the guild and not wait for the auto save to save it
+     * @description Sets data in the {Guild} object
+     * @param {string} key - The data name (example: prefix)
+     * @param {string} value - The data to be stored (example: !)
+     * @param {boolean} forceSave - Whether to force save the guild and not wait for the auto save to save it
      */
     Guild.prototype.setData = function (key, value, forceSave) {
         return __awaiter(this, void 0, void 0, function () {
@@ -71,12 +75,17 @@ var Guild = /** @class */ (function () {
             });
         });
     };
-    Guild.prototype.getData = function (id) {
-        return this._data.get(id);
+    /**
+     * @description Returns a {Object} from the provided key
+     * @param {string} key - Key for the data you are trying to get
+     * @returns Object
+     */
+    Guild.prototype.getData = function (key) {
+        return this._data.get(key);
     };
     /**
      * @description Saves the guild into the database
-     * @param log - Whether to log that the guild has saved
+     * @param {boolean} log - Whether to log that the guild has saved
      */
     Guild.prototype.save = function (log) {
         return __awaiter(this, void 0, void 0, function () {

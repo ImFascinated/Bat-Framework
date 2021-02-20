@@ -79,8 +79,9 @@ var Mongo_1 = __importStar(require("./Database/Mongo"));
 var BatClient = /** @class */ (function (_super) {
     __extends(BatClient, _super);
     /**
-     * @param client - Discord.JS Client
-     * @param options - BatClient Options
+     * @description Constructs the {BatClient} instance
+     * @param {Client} client - Discord.JS Client
+     * @param {Options} options - BatClient Options
      */
     function BatClient(client, options) {
         var _this = _super.call(this) || this;
