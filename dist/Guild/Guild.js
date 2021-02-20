@@ -44,13 +44,12 @@ var Guild = /** @class */ (function () {
         this._data = new Map();
         this._id = id;
     }
-    Object.defineProperty(Guild.prototype, "id", {
-        get: function () {
-            return this._id;
-        },
-        enumerable: false,
-        configurable: true
-    });
+    /**
+     * @description Sets data in the {@link Guild} object
+     * @param key - The data name (example: prefix)
+     * @param value - The data to be stored (example: !)
+     * @param forceSave - Whether to force save the guild and not wait for the auto save to save it
+     */
     Guild.prototype.setData = function (key, value, forceSave) {
         return __awaiter(this, void 0, void 0, function () {
             var promise;
@@ -75,6 +74,10 @@ var Guild = /** @class */ (function () {
     Guild.prototype.getData = function (id) {
         return this._data.get(id);
     };
+    /**
+     * @description Saves the guild into the database
+     * @param log - Whether to log that the guild has saved
+     */
     Guild.prototype.save = function (log) {
         return __awaiter(this, void 0, void 0, function () {
             var data, updateData;
@@ -98,6 +101,13 @@ var Guild = /** @class */ (function () {
             });
         });
     };
+    Object.defineProperty(Guild.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: false,
+        configurable: true
+    });
     return Guild;
 }());
 module.exports = Guild;

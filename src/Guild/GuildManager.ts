@@ -5,6 +5,11 @@ import GuildSchema from './GuildSchema';
 class GuildManager {
 	private _guilds: Map<String, Guild> = new Map();
 
+	/**
+	 * @description Constructs the {@link GuildManager} instance
+	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 */
+
 	constructor(instance: BatClient) {
 		setInterval(() => {
 			const before = Date.now();
@@ -15,6 +20,13 @@ class GuildManager {
 			console.log(`BatFramework > Saved guilds (took: ${Date.now() - before}ms)`);
 		}, instance.autoSaveInterval)
 	}
+
+	/**
+	 * @description Loads the guild with the provided id into the _guild Map
+	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 * @param {@link string} id - Guild id
+	 * @private
+	 */
 
 	private async loadGuild(instance: BatClient, id: string) {
 		let data = await GuildSchema.findOne({ id: id });
@@ -29,6 +41,12 @@ class GuildManager {
 		})
 		this._guilds.set(id, guild);
 	}
+
+	/**
+	 * @description Inserts the {@link Guild} into the database if it doesn't exist in the _guilds Map
+	 * @param instance - The main instance for BatClient.
+	 * @param id - Guild id
+	 */
 
 	public async createGuild(instance: BatClient, id: string) {
 		if (!this._guilds.has(id)) {
@@ -54,6 +72,11 @@ class GuildManager {
 			}
 		});
 	}
+
+	/**
+	 * @description Gets the provided guilds {@link Guild} object and then returns it
+	 * @param id
+	 */
 
 	public getGuild(id: string): Guild | undefined {
 		return this._guilds.get(id);

@@ -13,9 +13,23 @@ type Options = {
 class EventHandler {
 	private _events: Map<String, EventBase> = new Map();
 
+	/**
+	 * @description Constructs the {@link EventHandler} instance
+	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 * @param {@link Client} client - Discord.JS client
+	 */
+
 	constructor(instance: BatClient, client: Client) {
 		this.init(instance, client, { directory: instance.eventsDirectory });
 	}
+
+	/**
+	 * @description Initializes the events, gets them ready within the {@link Client} and stores them into the _events Map
+	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 * @param {@link Client} client - Discord.JS client
+	 * @param {@link Options} options - The {@link Options} passed into the method
+	 * @private
+	 */
 
 	private init(instance: BatClient, client: Client, options: Options) {
 		let {
@@ -41,6 +55,14 @@ class EventHandler {
 			}
 		});
 	}
+
+	/**
+	 *
+	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 * @param {@link Client} client - Discord.JS client
+	 * @param {@link Event} event - The {@link Event} passed into the method
+	 * @param {@link string} name - The events name
+	 */
 
 	public registerEvent(instance: BatClient, client: any, event: EventBase, name: string) {
 		if (!event.event) {

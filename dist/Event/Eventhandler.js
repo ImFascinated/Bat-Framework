@@ -14,10 +14,22 @@ var promisify = require('util').promisify;
 var glob = promisify(require('glob'));
 var path_1 = __importDefault(require("path"));
 var EventHandler = /** @class */ (function () {
+    /**
+     * @description Constructs the {@link EventHandler} instance
+     * @param {@link BatClient} instance - The main instance for BatClient.
+     * @param {@link Client} client - Discord.JS client
+     */
     function EventHandler(instance, client) {
         this._events = new Map();
         this.init(instance, client, { directory: instance.eventsDirectory });
     }
+    /**
+     * @description Initializes the events, gets them ready within the {@link Client} and stores them into the _events Map
+     * @param {@link BatClient} instance - The main instance for BatClient.
+     * @param {@link Client} client - Discord.JS client
+     * @param {@link Options} options - The {@link Options} passed into the method
+     * @private
+     */
     EventHandler.prototype.init = function (instance, client, options) {
         var _this = this;
         var directory = options.directory, _a = options.silentLoad, silentLoad = _a === void 0 ? false : _a;
@@ -43,6 +55,13 @@ var EventHandler = /** @class */ (function () {
             }
         });
     };
+    /**
+     *
+     * @param {@link BatClient} instance - The main instance for BatClient.
+     * @param {@link Client} client - Discord.JS client
+     * @param {@link Event} event - The {@link Event} passed into the method
+     * @param {@link string} name - The events name
+     */
     EventHandler.prototype.registerEvent = function (instance, client, event, name) {
         if (!event.event) {
             throw new Error("BatFramework > Event " + name + " does not have an event type, therefore it cannot run.");

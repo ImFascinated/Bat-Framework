@@ -30,6 +30,11 @@ class BatClient extends EventEmitter {
 	private _mongo = '';
 	private _mongoConnection: Connection | null = null;
 
+	/**
+	 * @param client - Discord.JS Client
+	 * @param options - BatClient Options
+	 */
+
 	constructor(client: Client, options: Options) {
 		super();
 		if (!client) {

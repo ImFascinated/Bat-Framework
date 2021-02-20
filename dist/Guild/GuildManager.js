@@ -41,6 +41,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var Guild_1 = __importDefault(require("./Guild"));
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var GuildManager = /** @class */ (function () {
+    /**
+     * @description Constructs the {@link GuildManager} instance
+     * @param {@link BatClient} instance - The main instance for BatClient.
+     */
     function GuildManager(instance) {
         var _this = this;
         this._guilds = new Map();
@@ -60,6 +64,12 @@ var GuildManager = /** @class */ (function () {
             console.log("BatFramework > Saved guilds (took: " + (Date.now() - before) + "ms)");
         }, instance.autoSaveInterval);
     }
+    /**
+     * @description Loads the guild with the provided id into the _guild Map
+     * @param {@link BatClient} instance - The main instance for BatClient.
+     * @param {@link string} id - Guild id
+     * @private
+     */
     GuildManager.prototype.loadGuild = function (instance, id) {
         return __awaiter(this, void 0, void 0, function () {
             var data, guild;
@@ -89,20 +99,30 @@ var GuildManager = /** @class */ (function () {
             });
         });
     };
+    /**
+     * @description Inserts the {@link Guild} into the database if it doesn't exist in the _guilds Map
+     * @param instance - The main instance for BatClient.
+     * @param id - Guild id
+     */
     GuildManager.prototype.createGuild = function (instance, id) {
         return __awaiter(this, void 0, void 0, function () {
             var guild;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this._guilds.has(id)) {
-                            this.loadGuild(instance, id);
-                        }
+                        if (!!this._guilds.has(id)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.loadGuild(instance, id)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
                         if (this._guilds.has(id)) {
                             return [2 /*return*/];
                         }
                         guild = new Guild_1.default(id);
-                        guild.setData('prefix', instance.defaultPrefix);
+                        return [4 /*yield*/, guild.setData('prefix', instance.defaultPrefix)];
+                    case 3:
+                        _a.sent();
                         this._guilds.set(id, guild);
                         return [4 /*yield*/, GuildSchema_1.default.findOne({ id: id }, function (err, data) {
                                 if (err)
@@ -115,13 +135,17 @@ var GuildManager = /** @class */ (function () {
                                     return toSave.save();
                                 }
                             })];
-                    case 1:
+                    case 4:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
+    /**
+     * @description Gets the provided guilds {@link Guild} object and then returns it
+     * @param id
+     */
     GuildManager.prototype.getGuild = function (id) {
         return this._guilds.get(id);
     };

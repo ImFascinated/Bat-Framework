@@ -8,9 +8,12 @@ class Guild {
 		this._id = id;
 	}
 
-	public get id(): string {
-		return this._id;
-	}
+	/**
+ 	 * @description Sets data in the {@link Guild} object
+	 * @param key - The data name (example: prefix)
+	 * @param value - The data to be stored (example: !)
+	 * @param forceSave - Whether to force save the guild and not wait for the auto save to save it
+	 */
 
 	public async setData(key: string, value: Object, forceSave?: boolean): Promise<any> {
 		let promise;
@@ -28,6 +31,11 @@ class Guild {
 		return this._data.get(id);
 	}
 
+	/**
+	 * @description Saves the guild into the database
+	 * @param log - Whether to log that the guild has saved
+	 */
+
 	public async save(log?: boolean) {
 		let data: any = await GuildSchema.findOne({ id: this._id });
 
@@ -41,6 +49,10 @@ class Guild {
 		if (log) {
 			console.log(`BatFramework > Force saved guild "${this._id}"`)
 		}
+	}
+
+	public get id(): string {
+		return this._id;
 	}
 }
 
