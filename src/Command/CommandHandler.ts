@@ -14,6 +14,12 @@ type Options = {
 class CommandHandler {
 	private _commands: Map<String, CommandBase> = new Map();
 
+	/**
+	 * @description Constructs the {CommandHandler} instance
+	 * @param {BatClient} instance - The main instance for BatClient.
+	 * @param {Client} client - Discord.JS client
+	 */
+
 	constructor(instance: BatFramework, client: Client) {
 		this.init(instance, client, { directory: instance.commandsDirectory });
 
@@ -41,6 +47,14 @@ class CommandHandler {
 			}
 		});
 	}
+
+	/**
+	 * @description Initializes the commands, gets them ready within the {Client} and stores them into the _commands Map
+	 * @param {BatClient} instance - The main instance for BatClient.
+	 * @param {Client} client - Discord.JS client
+	 * @param {Options} options - The {Options} passed into the method
+	 * @private
+	 */
 
 	private init(instance: BatFramework, client: Client, options: Options) {
 		let {
@@ -85,12 +99,24 @@ class CommandHandler {
 		});
 	}
 
+	/**
+	 * @description Registers the {CommandBase} and adds it into the _commands Map
+	 * @param {CommandBase} command - The {CommandBase} passed into the method
+	 * @param {string} name - The commands name as lower case
+	 */
+
 	public registerCommand(command: CommandBase, name: string) {
 		this._commands.set(name, command)
 	}
 
+	/**
+	 * @description Finds the {CommandBase} that has the provided name
+	 * @param {string} name - Provided name
+	 * @returns CommandBase
+	 */
+
 	public getCommandByName(name: string): CommandBase | undefined {
-		let toReturn: CommandBase | undefined;
+		let toReturn: CommandBase | undefined = undefined;
 		this._commands.forEach(command => {
 			if (toReturn) return toReturn;
 			if (command.name === name) toReturn = command;

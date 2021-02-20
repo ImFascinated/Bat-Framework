@@ -6,8 +6,8 @@ class GuildManager {
 	private _guilds: Map<String, Guild> = new Map();
 
 	/**
-	 * @description Constructs the {@link GuildManager} instance
-	 * @param {@link BatClient} instance - The main instance for BatClient.
+	 * @description Constructs the {GuildManager} instance
+	 * @param {BatClient} instance - The main instance for BatClient.
 	 */
 
 	constructor(instance: BatClient) {
@@ -23,8 +23,8 @@ class GuildManager {
 
 	/**
 	 * @description Loads the guild with the provided id into the _guild Map
-	 * @param {@link BatClient} instance - The main instance for BatClient.
-	 * @param {@link string} id - Guild id
+	 * @param {BatClient} instance - The main instance for BatClient.
+	 * @param {string} id - Guild id
 	 * @private
 	 */
 
@@ -43,9 +43,9 @@ class GuildManager {
 	}
 
 	/**
-	 * @description Inserts the {@link Guild} into the database if it doesn't exist in the _guilds Map
-	 * @param instance - The main instance for BatClient.
-	 * @param id - Guild id
+	 * @description Inserts the {Guild} into the database if it doesn't exist in the _guilds Map
+	 * @param {BatClient} instance - The main instance for BatClient.
+	 * @param {string} id - Guild id
 	 */
 
 	public async createGuild(instance: BatClient, id: string) {
@@ -74,8 +74,9 @@ class GuildManager {
 	}
 
 	/**
-	 * @description Gets the provided guilds {@link Guild} object and then returns it
-	 * @param id
+	 * @description Gets the provided guilds {Guild} object and then returns it
+	 * @param {string} id - Guild id
+	 * @returns Guild
 	 */
 
 	public getGuild(id: string): Guild | undefined {

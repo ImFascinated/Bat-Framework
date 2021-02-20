@@ -4,15 +4,20 @@ class Guild {
 	private _id: string;
 	private _data: Map<String, Object> = new Map();
 
+	/**
+	 * @description Constructs the {Guild} instance
+	 * @param {string} id - Guild id
+	 */
+
 	constructor(id: string) {
 		this._id = id;
 	}
 
 	/**
- 	 * @description Sets data in the {@link Guild} object
-	 * @param key - The data name (example: prefix)
-	 * @param value - The data to be stored (example: !)
-	 * @param forceSave - Whether to force save the guild and not wait for the auto save to save it
+ 	 * @description Sets data in the {Guild} object
+	 * @param {string} key - The data name (example: prefix)
+	 * @param {string} value - The data to be stored (example: !)
+	 * @param {boolean} forceSave - Whether to force save the guild and not wait for the auto save to save it
 	 */
 
 	public async setData(key: string, value: Object, forceSave?: boolean): Promise<any> {
@@ -27,13 +32,19 @@ class Guild {
 		return promise;
 	}
 
-	public getData(id: string): Object | undefined {
-		return this._data.get(id);
+	/**
+	 * @description Returns a {Object} from the provided key
+	 * @param {string} key - Key for the data you are trying to get
+	 * @returns Object
+	 */
+
+	public getData(key: string): Object | undefined {
+		return this._data.get(key);
 	}
 
 	/**
 	 * @description Saves the guild into the database
-	 * @param log - Whether to log that the guild has saved
+	 * @param {boolean} log - Whether to log that the guild has saved
 	 */
 
 	public async save(log?: boolean) {
