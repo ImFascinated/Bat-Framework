@@ -44,8 +44,11 @@ var EventHandler = /** @class */ (function () {
         });
     };
     EventHandler.prototype.registerEvent = function (instance, client, event, name) {
-        this._events.set(name, event);
-        client[event.type](name, function () {
+        if (!event.event) {
+            throw new Error("BatFramework > Event " + name + " does not have an event type, therefore it cannot run.");
+        }
+        this._events.set(event.event, event);
+        client[event.type](event.event, function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];

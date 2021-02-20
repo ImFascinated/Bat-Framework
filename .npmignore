@@ -4,6 +4,7 @@
 /docs
 /test
 /dist
+/out
 .env
 package-lock.json
 npm-debug.log

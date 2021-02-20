@@ -19,7 +19,7 @@ Bot.setMongoPath(process.env.MONGO_URI);
 Bot.setDefaultPrefix('?');
 
 Bot.on('databaseConnected', () => {
-	console.log('Database connected!')
+	console.log('Bot » Database connected!');
 });
 
 client.login(process.env.TOKEN);

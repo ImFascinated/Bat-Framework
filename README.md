@@ -34,7 +34,7 @@ Bot.setMongoPath(process.env.MONGO_URI);
 Bot.setDefaultPrefix('?');
 
 Bot.on('databaseConnected', () => {
-    console.log('Database connected!')
+    console.log('Bot » Database connected!');
 });
 
 client.login(process.env.TOKEN);
@@ -73,6 +73,8 @@ module.exports = class MessageEvent extends CommandBase {
 **Creating a Event**
 ---
 Events can be anything that is called from the DiscordJS Client.
+Note: The file name can be anything, the "event" option is the event called internally.
+Example: event: 'message'
 
 ```js
 // File name: ready.js
@@ -81,12 +83,18 @@ Events can be anything that is called from the DiscordJS Client.
 const { EventBase } = require('@imfascinated/bat-framework');
 
 module.exports = class ReadyEvent extends EventBase {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+        super({
+            event: 'ready'
+        });
     }
+    
+    /**
+     * @param {BatClient} instance 
+     */
 
-    run() {
-        console.log('Bot Ready!');
+    run(instance) {
+        console.log(`Bot » Ready!`);
     }
 }
 ```

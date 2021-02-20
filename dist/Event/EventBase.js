@@ -1,9 +1,11 @@
 "use strict";
 var EventBase = /** @class */ (function () {
     function EventBase(options) {
+        this._event = '';
         this._type = 'on';
         this._once = false;
-        var _a = options.type, type = _a === void 0 ? 'on' : _a, _b = options.once, once = _b === void 0 ? false : _b;
+        var _a = options.event, event = _a === void 0 ? '' : _a, _b = options.type, type = _b === void 0 ? 'on' : _b, _c = options.once, once = _c === void 0 ? false : _c;
+        this._event = event;
         this._type = type;
         this._once = once;
     }
@@ -14,6 +16,13 @@ var EventBase = /** @class */ (function () {
         }
         throw new Error("The event " + this._type + " is missing the run method");
     };
+    Object.defineProperty(EventBase.prototype, "event", {
+        get: function () {
+            return this._event;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(EventBase.prototype, "type", {
         get: function () {
             return this._type;
@@ -24,13 +33,6 @@ var EventBase = /** @class */ (function () {
     Object.defineProperty(EventBase.prototype, "once", {
         get: function () {
             return this._once;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(EventBase.prototype, "emitter", {
-        get: function () {
-            return this._emitter;
         },
         enumerable: false,
         configurable: true

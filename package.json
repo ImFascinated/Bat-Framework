@@ -1,6 +1,6 @@
 {
   "name": "@imfascinated/bat-framework",
-  "version": "0.0.13-DEV",
+  "version": "0.0.14-DEV",
   "description": "A simple to use discord.js framework.",
   "main": "dist/index.js",
   "author": "ImFascinated",

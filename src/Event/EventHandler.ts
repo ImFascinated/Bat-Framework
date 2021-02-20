@@ -43,8 +43,12 @@ class EventHandler {
 	}
 
 	public registerEvent(instance: BatClient, client: any, event: EventBase, name: string) {
-		this._events.set(name, event);
-		client[event.type](name, (...args: any) => {
+		if (!event.event) {
+			throw new Error(`BatFramework > Event ${name} does not have an event type, therefore it cannot run.`);
+		}
+
+		this._events.set(event.event, event);
+		client[event.type](event.event, (...args: any) => {
 			event.run(instance, ...args)
 		});
 	}

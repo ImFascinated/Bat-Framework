@@ -1,8 +1,10 @@
 const { BatClient, EventBase } = require('../../dist/index');
 
 module.exports = class ReadyEvent extends EventBase {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+		super({
+			event: 'ready'
+		});
 	}
 	
 	/**
@@ -11,6 +13,6 @@ module.exports = class ReadyEvent extends EventBase {
 	 */
 
 	run(instance) {
-		console.log(`Bot » Ready!`)
+		console.log(`Bot » Ready!`);
     }
 }

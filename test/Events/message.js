@@ -2,8 +2,10 @@ const { Message } = require('discord.js');
 const { BatClient, EventBase } = require('../../dist/index');
 
 module.exports = class MessageEvent extends EventBase {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+        super({
+			event: 'message'
+		});
 	}
 	
 	/**

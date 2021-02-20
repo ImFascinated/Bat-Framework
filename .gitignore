@@ -1,5 +1,6 @@
 /.vscode
 /node_modules
+/out
 .env
 package-lock.json
 npm-debug.log
