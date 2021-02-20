@@ -32,13 +32,13 @@ class GuildManager {
 
 	public async createGuild(instance: BatClient, id: string) {
 		if (!this._guilds.has(id)) {
-			this.loadGuild(instance, id);
+			await this.loadGuild(instance, id);
 		}
 		if (this._guilds.has(id)) {
 			return;
 		}
 		const guild: Guild = new Guild(id);
-		guild.setData('prefix', instance.defaultPrefix);
+		await guild.setData('prefix', instance.defaultPrefix);
 
 		this._guilds.set(id, guild);
 

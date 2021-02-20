@@ -1,9 +1,18 @@
-**This Package is still under development and not all features are done.**
----
+# This Package is still under development and not all features are done.
+
+# Table of Contents
+
+- [Installation](#installation)
+- [Setup](#setup)
+- [Creating a Command](#creating-a-command)
+- [Creating a Event](#creating-a-event)
+- [Guild Data](#guild-data)
+
+# Installation
 
 **NPM**
 ---
-```
+```bash
 npm install @imfascinated/bat-framework
 ```
 
@@ -101,7 +110,7 @@ module.exports = class ReadyEvent extends EventBase {
 }
 ```
 
-**Accessing and modifying guild data**
+**Guild Data**
 ---
 Guild data can be set to anything since it's stored as an Object (key: String, value: Object)
 
