@@ -4,7 +4,8 @@ const { BatClient, EventBase } = require('../../dist/index');
 module.exports = class MessageEvent extends EventBase {
     constructor() {
         super({
-			event: 'message'
+			event: 'message',
+			type: 'on'
 		});
 	}
 	
@@ -14,7 +15,7 @@ module.exports = class MessageEvent extends EventBase {
 	 * @param {Message} message 
 	 */
 
-	run(instance, message) {
+	run(instance, client, message) {
 		console.log(`Message: ${message.content}`)
     }
 }

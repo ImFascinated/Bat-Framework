@@ -1,3 +1,4 @@
+import { Client } from "discord.js";
 import BatClient from "../BatClient";
 
 type Options = {
@@ -9,21 +10,18 @@ type Options = {
 class EventBase {
 	private _event: string = '';
 	private _type: string = 'on';
-	private _once: boolean = false;
 
 	constructor(options: Options) {
 		let {
 			event = '',
-			type = 'on',
-			once = false,
+			type = 'on'
 		} = options;
 
 		this._event = event;
 		this._type = type;
-		this._once = once;
 	}
 
-	public run(instance: BatClient, ...args: any) {
+	public run(instance: BatClient, client: Client, ...args: any) {
 		throw new Error(`The event ${this._type} is missing the run method`);
 	}
 
@@ -33,10 +31,6 @@ class EventBase {
 
 	public get type(): string {
 		return this._type;
-	}
-
-	public get once(): boolean {
-		return this._once;
 	}
 }
 

@@ -90,10 +90,12 @@ module.exports = class ReadyEvent extends EventBase {
     }
     
     /**
+     * 
      * @param {BatClient} instance 
+     * @param {Client} client
      */
 
-    run(instance) {
+    run(instance, client) {
         console.log(`Bot » Ready!`);
     }
 }

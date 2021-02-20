@@ -49,7 +49,7 @@ class EventHandler {
 
 		this._events.set(event.event, event);
 		client[event.type](event.event, (...args: any) => {
-			event.run(instance, ...args)
+			event.run(instance, client, ...args)
 		});
 	}
 }

@@ -53,7 +53,7 @@ var EventHandler = /** @class */ (function () {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            event.run.apply(event, __spreadArrays([instance], args));
+            event.run.apply(event, __spreadArrays([instance, client], args));
         });
     };
     return EventHandler;
