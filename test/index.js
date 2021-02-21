@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
-const { Client } = require('../dist/index');
+const { Client, Intents } = require('discord.js');
+const { Client: BatClient } = require('../dist/index');
 require('dotenv').config()
 
-const client = new Discord.Client();
-const Bot = new Client(client, {
+const client = new Client({ ws: { intents: Intents.ALL } });
+const Bot = new BatClient(client, {
 	commandsDirectory: 'Commands',
 	eventsDirectory: 'Events',
 	showWarns: true,

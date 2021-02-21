@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js';
+import { Client, Message, MessageEmbed } from 'discord.js';
 import BatFramework from '../BatClient';
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
@@ -25,24 +25,56 @@ class CommandHandler {
 
 		// TODO: Move this to a built-in event.
 		client.on('message', async (message: Message) => {
-			if (!message.guild || message.author.bot) return;
+			const { guild, member, author, content, channel } = message
+			if (!guild || author.bot) return;
 
-			await instance.guildManager.createGuild(instance, message.guild.id);
+			await instance.guildManager.createGuild(instance, guild.id);
 
-			let guildData: Guild | undefined = instance.guildManager.getGuild(message.guild.id);
+			let guildData: Guild | undefined = instance.guildManager.getGuild(guild.id);
 			if (guildData === undefined) {
-				await instance.guildManager.createGuild(instance, message.guild.id);
-				guildData = instance.guildManager.getGuild(message.guild.id);
+				await instance.guildManager.createGuild(instance, guild.id);
+				guildData = instance.guildManager.getGuild(guild.id);
 			}
 
 			if (guildData === undefined) return;
 			const prefix = guildData.getData('prefix')?.toString();
 			if (prefix === undefined) return;
-			if (!message.content.startsWith(prefix)) return;
+			if (!content.startsWith(prefix)) return;
 
-			const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
+			const [cmd, ...args] = content.slice(prefix.length).trim().split(/ +/g);
 			const command: CommandBase | undefined = this.getCommandByName(cmd);
 			if (command) {
+				// Checking if command has client permissions, and if it does, check if the client (the bot) has the permission(s)
+				if (command.clientPermissions) {
+					const missingPermissions: string[] = [];
+					command.clientPermissions.forEach(permission => {
+						if (!guild.me?.hasPermission(permission)) {
+							missingPermissions.push(permission);
+						}
+					})
+					if (missingPermissions.length !== 0) {
+						return channel.send(new MessageEmbed()
+							.setColor('RED')
+							.setDescription(`I am missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot run this command.`)
+						)
+					}
+				}
+
+				// Checking if command has user permissions, and if it does, it checks to see if the user has the permission(s)
+				if (command.userPermissions) {
+					const missingPermissions: string[] = [];
+					command.userPermissions.forEach(permission => {
+						if (!member?.hasPermission(permission)) {
+							missingPermissions.push(permission);
+						}
+					})
+					if (missingPermissions.length !== 0) {
+						return channel.send(new MessageEmbed()
+							.setColor('RED')
+							.setDescription(`You are missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot use this command.`)
+						)
+					}
+				}
 				command.run(message, args, guildData);
 			}
 		});

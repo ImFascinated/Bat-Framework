@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var discord_js_1 = require("discord.js");
 var promisify = require('util').promisify;
 var glob = promisify(require('glob'));
 var path_1 = __importDefault(require("path"));
@@ -54,22 +55,23 @@ var CommandHandler = /** @class */ (function () {
         this.init(instance, client, { directory: instance.commandsDirectory });
         // TODO: Move this to a built-in event.
         client.on('message', function (message) { return __awaiter(_this, void 0, void 0, function () {
-            var guildData, prefix, _a, cmd, args, command;
+            var guild, member, author, content, channel, guildData, prefix, _a, cmd, args, command, missingPermissions_1, missingPermissions_2;
             var _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        if (!message.guild || message.author.bot)
+                        guild = message.guild, member = message.member, author = message.author, content = message.content, channel = message.channel;
+                        if (!guild || author.bot)
                             return [2 /*return*/];
-                        return [4 /*yield*/, instance.guildManager.createGuild(instance, message.guild.id)];
+                        return [4 /*yield*/, instance.guildManager.createGuild(instance, guild.id)];
                     case 1:
                         _c.sent();
-                        guildData = instance.guildManager.getGuild(message.guild.id);
+                        guildData = instance.guildManager.getGuild(guild.id);
                         if (!(guildData === undefined)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, instance.guildManager.createGuild(instance, message.guild.id)];
+                        return [4 /*yield*/, instance.guildManager.createGuild(instance, guild.id)];
                     case 2:
                         _c.sent();
-                        guildData = instance.guildManager.getGuild(message.guild.id);
+                        guildData = instance.guildManager.getGuild(guild.id);
                         _c.label = 3;
                     case 3:
                         if (guildData === undefined)
@@ -77,11 +79,40 @@ var CommandHandler = /** @class */ (function () {
                         prefix = (_b = guildData.getData('prefix')) === null || _b === void 0 ? void 0 : _b.toString();
                         if (prefix === undefined)
                             return [2 /*return*/];
-                        if (!message.content.startsWith(prefix))
+                        if (!content.startsWith(prefix))
                             return [2 /*return*/];
-                        _a = message.content.slice(prefix.length).trim().split(/ +/g), cmd = _a[0], args = _a.slice(1);
+                        _a = content.slice(prefix.length).trim().split(/ +/g), cmd = _a[0], args = _a.slice(1);
                         command = this.getCommandByName(cmd);
                         if (command) {
+                            // Checking if command has client permissions, and if it does, check if the client (the bot) has the permission(s)
+                            if (command.clientPermissions) {
+                                missingPermissions_1 = [];
+                                command.clientPermissions.forEach(function (permission) {
+                                    var _a;
+                                    if (!((_a = guild.me) === null || _a === void 0 ? void 0 : _a.hasPermission(permission))) {
+                                        missingPermissions_1.push(permission);
+                                    }
+                                });
+                                if (missingPermissions_1.length !== 0) {
+                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                            .setColor('RED')
+                                            .setDescription("I am missing the permission" + (missingPermissions_1.length > 1 ? 's' : '') + " `" + missingPermissions_1.join(', ') + "` and cannot run this command."))];
+                                }
+                            }
+                            // Checking if command has user permissions, and if it does, it checks to see if the user has the permission(s)
+                            if (command.userPermissions) {
+                                missingPermissions_2 = [];
+                                command.userPermissions.forEach(function (permission) {
+                                    if (!(member === null || member === void 0 ? void 0 : member.hasPermission(permission))) {
+                                        missingPermissions_2.push(permission);
+                                    }
+                                });
+                                if (missingPermissions_2.length !== 0) {
+                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                            .setColor('RED')
+                                            .setDescription("You are missing the permission" + (missingPermissions_2.length > 1 ? 's' : '') + " `" + missingPermissions_2.join(', ') + "` and cannot use this command."))];
+                                }
+                            }
                             command.run(message, args, guildData);
                         }
                         return [2 /*return*/];

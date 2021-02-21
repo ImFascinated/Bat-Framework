@@ -41,11 +41,13 @@ var CommandBase = /** @class */ (function () {
         this._aliases = [];
         this._description = '';
         this._category = '';
-        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d;
+        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d, _e = options.clientPermissions, clientPermissions = _e === void 0 ? new Array() : _e, _f = options.userPermissions, userPermissions = _f === void 0 ? new Array() : _f;
         this._name = name;
         this._aliases = aliases;
         this._description = description;
         this._category = category;
+        this._clientPermissions = clientPermissions;
+        this._userPermissions = userPermissions;
     }
     CommandBase.prototype.run = function (message, args, guildData) {
         return __awaiter(this, void 0, void 0, function () {
@@ -78,6 +80,20 @@ var CommandBase = /** @class */ (function () {
     Object.defineProperty(CommandBase.prototype, "category", {
         get: function () {
             return this._category;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CommandBase.prototype, "clientPermissions", {
+        get: function () {
+            return this._clientPermissions;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CommandBase.prototype, "userPermissions", {
+        get: function () {
+            return this._userPermissions;
         },
         enumerable: false,
         configurable: true

@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 import BatClient from "../BatClient";
 
-type Options = {
+interface Options {
 	event?: string,
 	type?: string,
 	once?: boolean
