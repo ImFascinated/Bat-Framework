@@ -7,6 +7,7 @@
 - [Creating a Command](#creating-a-command)
 - [Creating a Event](#creating-a-event)
 - [Guild Data](#guild-data)
+- [Command Permissions](#command-permissions)
 
 # Installation
 
@@ -141,18 +142,43 @@ module.exports = class MessageEvent extends CommandBase {
         const prefix = args[0];
         // A simple example below is how to set guild data.
 
-        /**
-         * Data name: 'prefix'
-         * Data: prefix
-         * Force save: true
-         */
-
         await guildData.setData('prefix', prefix, true).then(data => {
             message.channel.send(`Your guilds prefix has been updated to \`${data.value}\`.`);
         });
     }
 }
 ```
+
+**Command Permissions**
+---
+Permissions required by the user (or client) to use the command.
+```js
+const { Message } = require('discord.js');
+const { CommandBase } = require('@imfascinated/bat-framework');
+
+module.exports = class MessageEvent extends CommandBase {
+    constructor() {
+        super({
+            name: 'testy',
+            description: 'What did you expect to read',
+            clientPermissions: [ // The permissions the bot needs to run this command
+                'KICK_MEMBERS'
+            ],
+            userPermissions: [ // The permissions the user needs to run this command
+                'ADMINISTRATOR'
+            ]
+        });
+    }
+
+    /**
+     * @param {Message} message 
+     * @param {string[]} args 
+     */
+
+    async run(message, args, guildData) {}
+}
+```
+
 **Support & Feature Requests**
 ---
 This package is looking for feedback and ideas to help cover more use cases. If you have any ideas feel free to share them me on discord at Fascinated#4735
