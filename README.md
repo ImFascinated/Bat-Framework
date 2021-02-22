@@ -94,7 +94,7 @@ Example: event: 'ready'
 // Folder: /src/Events
 
 const { Client } = require('discord.js');
-const { EventBase } = require('@imfascinated/bat-framework');
+const { BatClient, EventBase } = require('@imfascinated/bat-framework');
 
 module.exports = class ReadyEvent extends EventBase {
     constructor() {
