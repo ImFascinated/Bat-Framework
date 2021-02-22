@@ -1,3 +1,4 @@
+import { Client } from 'discord.js';
 import BatClient from '../Client/BatClient';
 import Guild from './Guild';
 import GuildSchema from './GuildSchema';
@@ -10,14 +11,29 @@ class GuildManager {
 	 * @param {BatClient} instance - The main instance for BatClient.
 	 */
 
-	constructor(instance: BatClient) {
+	constructor(instance: BatClient, client: Client) {
+		instance.on('databaseConnected', async () => {
+			if (instance.forceLoadGuilds) {
+				const data = await GuildSchema.find();
+				data.forEach(data => {
+					if (data === null) return;
+					const guild = new Guild(data.id);
+					data.get('data').forEach((data: { key: string; value: Object }) => {
+						guild.setData(data.key, data.value);
+					})
+					this._guilds.set(data.id, guild);
+				})
+				console.log(`BatFramework > Force loaded ${data.length} guild${data.length > 1 ? 's' : ''}`);
+			}
+		})
+
 		setInterval(() => {
 			const before = Date.now();
-			console.log(`BatFramework > Saving ${this._guilds.size} guilds`);
+			console.log(`BatFramework > Saving ${this._guilds.size} guild${this._guilds.size > 1 ? 's' : ''}`);
 			this._guilds.forEach(async (guild) => {
 				await guild.save();
 			});
-			console.log(`BatFramework > Saved guilds (took: ${Date.now() - before}ms)`);
+			console.log(`BatFramework > Saved guild${this._guilds.size > 1 ? 's' : ''} (took: ${Date.now() - before}ms)`);
 		}, instance.autoSaveInterval)
 	}
 

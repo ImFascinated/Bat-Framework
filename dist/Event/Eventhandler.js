@@ -50,7 +50,7 @@ var EventHandler = /** @class */ (function () {
             }
             if (!silentLoad) {
                 if (_this._events.size > 0) {
-                    console.log("BatFramework > Loaded " + _this._events.size + " events");
+                    console.log("BatFramework > Loaded " + _this._events.size + " event" + (_this._events.size > 1 ? 's' : ''));
                 }
             }
         });

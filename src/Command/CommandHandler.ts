@@ -91,7 +91,6 @@ class CommandHandler {
 						)
 					}
 				}
-
 				command.run(message, args, guildData);
 			}
 		});
@@ -142,7 +141,7 @@ class CommandHandler {
 			}
 			if (!silentLoad) {
 				if (this._commands.size > 0) {
-					console.log(`BatFramework > Loaded ${this._commands.size} commands`);
+					console.log(`BatFramework > Loaded ${this._commands.size} command${this._commands.size > 1 ? 's' : ''}`);
 				}
 			}
 		});

@@ -33,6 +33,7 @@ const Bot = new Client(client, {
     eventsDirectory: 'Events',
     showWarns: true,
     autoSaveInterval: 300000, // Guild auto save interval
+    forceLoadGuilds: false, // Whether to load all guilds (in the database) on boot
     databaseOptions: {
         keepAlive: true,
         useNewUrlParser: true,

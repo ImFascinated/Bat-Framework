@@ -50,7 +50,7 @@ class EventHandler {
 			}
 			if (!silentLoad) {
 				if (this._events.size > 0) {
-					console.log(`BatFramework > Loaded ${this._events.size} events`);
+					console.log(`BatFramework > Loaded ${this._events.size} event${this._events.size > 1 ? 's' : ''}`);
 				}
 			}
 		});

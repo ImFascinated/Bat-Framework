@@ -19,6 +19,7 @@ class BatClient extends EventEmitter {
 	private _utils: Utils;
 	private _guildManager: GuildManager;
 	private _autoSaveInterval: number = 300000;
+	private _forceLoadGuilds: boolean = false;
 
 	private _mongo = '';
 	private _mongoConnection: Connection | null = null;
@@ -41,6 +42,7 @@ class BatClient extends EventEmitter {
 			eventsDirectory = 'events',
 			autoSaveInterval = 300000,
 			databaseOptions,
+			forceLoadGuilds = false
 		} = options;
 
 		if (module && require.main) {
@@ -57,9 +59,10 @@ class BatClient extends EventEmitter {
 
 		this._eventHandler = new EventHandler(this, client);
 		this._commandHandler = new CommandHandler(this, client);
-		this._guildManager = new GuildManager(this);
+		this._guildManager = new GuildManager(this, client);
 
 		this._autoSaveInterval = autoSaveInterval;
+		this._forceLoadGuilds = forceLoadGuilds;
 
 		this._utils = new Utils();
 
@@ -70,12 +73,12 @@ class BatClient extends EventEmitter {
 				this._mongoConnection = getMongoConnection();
 			} else {
 				if (showWarns) {
-					console.warn('WOKCommands > No MongoDB connection URI provided');
+					console.warn('BatFramework > No MongoDB connection URI provided');
 				}
 
 				this.emit('databaseConnected', null, '');
 			}
-		}, 500);
+		}, 1);
 		console.log('BatFramework > Successfully initialized');
 	}
 
@@ -113,6 +116,10 @@ class BatClient extends EventEmitter {
 
 	public get autoSaveInterval(): number {
 		return this._autoSaveInterval;
+	}
+
+	public get forceLoadGuilds(): boolean {
+		return this._forceLoadGuilds;
 	}
 
 	public get utils(): Utils {

@@ -45,12 +45,37 @@ var GuildManager = /** @class */ (function () {
      * @description Constructs the {GuildManager} instance
      * @param {BatClient} instance - The main instance for BatClient.
      */
-    function GuildManager(instance) {
+    function GuildManager(instance, client) {
         var _this = this;
         this._guilds = new Map();
+        instance.on('databaseConnected', function () { return __awaiter(_this, void 0, void 0, function () {
+            var data;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!instance.forceLoadGuilds) return [3 /*break*/, 2];
+                        return [4 /*yield*/, GuildSchema_1.default.find()];
+                    case 1:
+                        data = _a.sent();
+                        data.forEach(function (data) {
+                            if (data === null)
+                                return;
+                            var guild = new Guild_1.default(data.id);
+                            data.get('data').forEach(function (data) {
+                                guild.setData(data.key, data.value);
+                            });
+                            _this._guilds.set(data.id, guild);
+                        });
+                        console.log("BatFramework > Force loaded " + data.length + " guild" + (data.length > 1 ? 's' : ''));
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        }); });
         setInterval(function () {
             var before = Date.now();
-            console.log("BatFramework > Saving " + _this._guilds.size + " guilds");
+            console.log("BatFramework > Saving " + _this._guilds.size + " guild" + (_this._guilds.size > 1 ? 's' : ''));
             _this._guilds.forEach(function (guild) { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
@@ -61,7 +86,7 @@ var GuildManager = /** @class */ (function () {
                     }
                 });
             }); });
-            console.log("BatFramework > Saved guilds (took: " + (Date.now() - before) + "ms)");
+            console.log("BatFramework > Saved guild" + (_this._guilds.size > 1 ? 's' : '') + " (took: " + (Date.now() - before) + "ms)");
         }, instance.autoSaveInterval);
     }
     /**

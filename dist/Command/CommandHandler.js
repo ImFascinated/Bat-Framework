@@ -174,7 +174,7 @@ var CommandHandler = /** @class */ (function () {
             }
             if (!silentLoad) {
                 if (_this._commands.size > 0) {
-                    console.log("BatFramework > Loaded " + _this._commands.size + " commands");
+                    console.log("BatFramework > Loaded " + _this._commands.size + " command" + (_this._commands.size > 1 ? 's' : ''));
                 }
             }
         });
