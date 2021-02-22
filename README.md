@@ -87,12 +87,13 @@ module.exports = class MessageEvent extends CommandBase {
 ---
 Events can be anything that is called from the DiscordJS Client.
 Note: The file name can be anything, the "event" option is the event called internally.
-Example: event: 'message'
+Example: event: 'ready'
 
 ```js
 // File name: ready.js
 // Folder: /src/Events
 
+const { Client } = require('discord.js');
 const { EventBase } = require('@imfascinated/bat-framework');
 
 module.exports = class ReadyEvent extends EventBase {
