@@ -185,7 +185,7 @@ module.exports = class MessageEvent extends CommandBase {
 I don't recommend you use them for cooldowns over 5 mins yet since there is no database integration yet
 ```js
 const { Message } = require('discord.js');
-const { CommandBase } = require('../../dist/index');
+const { CommandBase } = require('@imfascinated/bat-framework');
 
 module.exports = class MessageEvent extends CommandBase {
     constructor() {
