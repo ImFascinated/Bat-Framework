@@ -201,7 +201,8 @@ module.exports = class MessageEvent extends CommandBase {
      */
 
     async run(message, args, guildData) {}
-}```
+}
+```
 
 **Support & Feature Requests**
 ---
