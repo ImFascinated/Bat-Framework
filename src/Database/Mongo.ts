@@ -1,5 +1,5 @@
 import mongoose, { Connection } from 'mongoose'
-import BatClient from '../BatClient'
+import BatClient from '../Client/BatClient'
 
 const results: {
 	[name: number]: string

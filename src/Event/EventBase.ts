@@ -1,17 +1,12 @@
 import { Client } from "discord.js";
-import BatClient from "../BatClient";
-
-interface Options {
-	event?: string,
-	type?: string,
-	once?: boolean
-}
+import BatClient from "../Client/BatClient";
+import IEventOptions from "./IEventOptions";
 
 class EventBase {
 	private _event: string = '';
 	private _type: string = 'on';
 
-	constructor(options: Options) {
+	constructor(options: IEventOptions) {
 		let {
 			event = '',
 			type = 'on'

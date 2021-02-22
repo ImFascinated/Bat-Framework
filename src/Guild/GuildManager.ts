@@ -1,4 +1,4 @@
-import BatClient from '../BatClient';
+import BatClient from '../Client/BatClient';
 import Guild from './Guild';
 import GuildSchema from './GuildSchema';
 

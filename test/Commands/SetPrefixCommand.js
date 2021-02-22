@@ -7,6 +7,7 @@ module.exports = class MessageEvent extends CommandBase {
 			name: 'setprefix',
 			description: 'Simple set prefix command.',
 			aliases: ['prefix'],
+			cooldown: 30000,
 			clientPermissions: [
 				'KICK_MEMBERS'
 			],

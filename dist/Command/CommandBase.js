@@ -35,19 +35,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var CommandCooldown_1 = __importDefault(require("./CommandCooldown"));
 var CommandBase = /** @class */ (function () {
     function CommandBase(options) {
         this._name = '';
         this._aliases = [];
         this._description = '';
         this._category = '';
-        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d, _e = options.clientPermissions, clientPermissions = _e === void 0 ? new Array() : _e, _f = options.userPermissions, userPermissions = _f === void 0 ? new Array() : _f;
+        this._cooldown = 0;
+        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d, _e = options.clientPermissions, clientPermissions = _e === void 0 ? new Array() : _e, _f = options.userPermissions, userPermissions = _f === void 0 ? new Array() : _f, _g = options.cooldown, cooldown = _g === void 0 ? 0 : _g;
         this._name = name;
         this._aliases = aliases;
         this._description = description;
         this._category = category;
         this._clientPermissions = clientPermissions;
         this._userPermissions = userPermissions;
+        this._cooldown = cooldown;
+        this._userCooldowns = new Map();
     }
     CommandBase.prototype.run = function (message, args, guildData) {
         return __awaiter(this, void 0, void 0, function () {
@@ -98,6 +105,41 @@ var CommandBase = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(CommandBase.prototype, "cooldown", {
+        get: function () {
+            return this._cooldown;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    CommandBase.prototype.getUserCooldown = function (guildId, userId) {
+        var timeLeft = 0;
+        this._userCooldowns.forEach(function (cooldowns, guild) {
+            if (guildId === guild) {
+                cooldowns.forEach(function (cooldown, user) {
+                    if (user === userId) {
+                        cooldown.forEach(function (cooldown) {
+                            if (cooldown.getTimeLeft() > 0) {
+                                timeLeft = cooldown.getTimeLeft();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        return timeLeft;
+    };
+    CommandBase.prototype.setUserCooldown = function (guildId, userId) {
+        var cooldowns = this._userCooldowns.get(guildId);
+        if (!cooldowns)
+            cooldowns = new Map();
+        var userCooldowns = cooldowns.get(userId);
+        if (!userCooldowns)
+            userCooldowns = new Array();
+        userCooldowns.push(new CommandCooldown_1.default(Date.now() + this._cooldown));
+        cooldowns.set(userId, userCooldowns);
+        this._userCooldowns.set(guildId, cooldowns);
+    };
     return CommandBase;
 }());
 module.exports = CommandBase;

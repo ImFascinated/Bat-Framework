@@ -8,6 +8,7 @@
 - [Creating a Event](#creating-a-event)
 - [Guild Data](#guild-data)
 - [Command Permissions](#command-permissions)
+- [Command Cooldowns](#command-cooldowns)
 
 # Installation
 
@@ -178,6 +179,29 @@ module.exports = class MessageEvent extends CommandBase {
     async run(message, args, guildData) {}
 }
 ```
+
+**Command Cooldowns**
+---
+I don't recommend you use them for cooldowns over 5 mins yet since there is no database integration yet
+```js
+const { Message } = require('discord.js');
+const { CommandBase } = require('../../dist/index');
+
+module.exports = class MessageEvent extends CommandBase {
+    constructor() {
+        super({
+            name: 'cooldowntest',
+            cooldown: 30000 // 30 Seconds
+        });
+    }
+
+    /**
+     * @param {Message} message 
+     * @param {string[]} args 
+     */
+
+    async run(message, args, guildData) {}
+}```
 
 **Support & Feature Requests**
 ---

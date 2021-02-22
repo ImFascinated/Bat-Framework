@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 import EventBase from "./EventBase";
-import BatClient from '../BatClient';
+import BatClient from '../Client/BatClient';
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
 import path from 'path';

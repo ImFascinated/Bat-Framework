@@ -1,20 +1,13 @@
 import { Client } from "discord.js";
 import { EventEmitter } from 'events'
-import CommandHandler from "./Command/CommandHandler";
-import EventHandler from "./Event/EventHandler";
-import GuildManager from "./Guild/GuildManager";
-import Utils from "./Utils/Utils";
+import CommandHandler from "../Command/CommandHandler";
+import EventHandler from "../Event/EventHandler";
+import GuildManager from "../Guild/GuildManager";
+import Utils from "../Utils/Utils";
+import IBatClientOptions from "./IBatClientOptions";
 
-import mongo, { getMongoConnection } from './Database/Mongo';
+import mongo, { getMongoConnection } from '../Database/Mongo';
 import { Connection } from 'mongoose';
-
-type Options = {
-	commandsDirectory?: string,
-	eventsDirectory?: string,
-	showWarns?: boolean,
-	autoSaveInterval?: number,
-	databaseOptions?: {}
-}
 
 class BatClient extends EventEmitter {
 	private _showWarns: boolean = true;
@@ -33,10 +26,10 @@ class BatClient extends EventEmitter {
 	/**
 	 * @description Constructs the {BatClient} instance
 	 * @param {Client} client - Discord.JS Client
-	 * @param {Options} options - BatClient Options
+	 * @param {IBatClientOptions} options - BatClient Options
 	 */
 
-	constructor(client: Client, options: Options) {
+	constructor(client: Client, options: IBatClientOptions) {
 		super();
 		if (!client) {
 			throw new Error('You must provide a Discord JS client as the first argument');

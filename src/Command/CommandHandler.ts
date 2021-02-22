@@ -1,7 +1,8 @@
 import { Client, Message, MessageEmbed } from 'discord.js';
-import BatFramework from '../BatClient';
+import BatFramework from '../Client/BatClient';
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
+import ms from 'ms';
 import path from 'path';
 import CommandBase from './CommandBase';
 import Guild from '../Guild/Guild';
@@ -27,6 +28,7 @@ class CommandHandler {
 		client.on('message', async (message: Message) => {
 			const { guild, member, author, content, channel } = message
 			if (!guild || author.bot) return;
+			if (!member) return;
 
 			await instance.guildManager.createGuild(instance, guild.id);
 
@@ -75,6 +77,21 @@ class CommandHandler {
 						)
 					}
 				}
+
+				if (command.cooldown) {
+					if (command.cooldown <= 0) return;
+					const left: number = command.getUserCooldown(guild.id, member.id);
+					if (left <= 0) {
+						command.setUserCooldown(guild.id, member.id);
+					}
+					if (left > 0) {
+						return channel.send(new MessageEmbed()
+							.setColor('RED')
+							.setDescription(`You are still on command cooldown for **${ms(left, { long: true })}**.`)
+						)
+					}
+				}
+
 				command.run(message, args, guildData);
 			}
 		});

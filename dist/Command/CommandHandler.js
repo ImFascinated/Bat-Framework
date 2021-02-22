@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var discord_js_1 = require("discord.js");
 var promisify = require('util').promisify;
 var glob = promisify(require('glob'));
+var ms_1 = __importDefault(require("ms"));
 var path_1 = __importDefault(require("path"));
 var CommandBase_1 = __importDefault(require("./CommandBase"));
 var CommandHandler = /** @class */ (function () {
@@ -55,13 +56,15 @@ var CommandHandler = /** @class */ (function () {
         this.init(instance, client, { directory: instance.commandsDirectory });
         // TODO: Move this to a built-in event.
         client.on('message', function (message) { return __awaiter(_this, void 0, void 0, function () {
-            var guild, member, author, content, channel, guildData, prefix, _a, cmd, args, command, missingPermissions_1, missingPermissions_2;
+            var guild, member, author, content, channel, guildData, prefix, _a, cmd, args, command, missingPermissions_1, missingPermissions_2, left;
             var _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         guild = message.guild, member = message.member, author = message.author, content = message.content, channel = message.channel;
                         if (!guild || author.bot)
+                            return [2 /*return*/];
+                        if (!member)
                             return [2 /*return*/];
                         return [4 /*yield*/, instance.guildManager.createGuild(instance, guild.id)];
                     case 1:
@@ -111,6 +114,19 @@ var CommandHandler = /** @class */ (function () {
                                     return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
                                             .setColor('RED')
                                             .setDescription("You are missing the permission" + (missingPermissions_2.length > 1 ? 's' : '') + " `" + missingPermissions_2.join(', ') + "` and cannot use this command."))];
+                                }
+                            }
+                            if (command.cooldown) {
+                                if (command.cooldown <= 0)
+                                    return [2 /*return*/];
+                                left = command.getUserCooldown(guild.id, member.id);
+                                if (left <= 0) {
+                                    command.setUserCooldown(guild.id, member.id);
+                                }
+                                if (left > 0) {
+                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                            .setColor('RED')
+                                            .setDescription("You are still on command cooldown for **" + ms_1.default(left, { long: true }) + "**."))];
                                 }
                             }
                             command.run(message, args, guildData);
