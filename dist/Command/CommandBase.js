@@ -40,23 +40,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var CommandCooldown_1 = __importDefault(require("./CommandCooldown"));
 var CommandBase = /** @class */ (function () {
+    /**
+     * @param {ICommandOptions} options
+     */
     function CommandBase(options) {
         this._name = '';
         this._aliases = [];
         this._description = '';
+        this._usage = '';
         this._category = '';
         this._cooldown = 0;
-        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.category, category = _d === void 0 ? '' : _d, _e = options.clientPermissions, clientPermissions = _e === void 0 ? new Array() : _e, _f = options.userPermissions, userPermissions = _f === void 0 ? new Array() : _f, _g = options.cooldown, cooldown = _g === void 0 ? 0 : _g;
+        var _a = options.name, name = _a === void 0 ? '' : _a, _b = options.aliases, aliases = _b === void 0 ? [] : _b, _c = options.description, description = _c === void 0 ? '' : _c, _d = options.usage, usage = _d === void 0 ? '' : _d, _e = options.category, category = _e === void 0 ? '' : _e, _f = options.clientPermissions, clientPermissions = _f === void 0 ? new Array() : _f, _g = options.userPermissions, userPermissions = _g === void 0 ? new Array() : _g, _h = options.cooldown, cooldown = _h === void 0 ? 0 : _h;
         this._name = name;
         this._aliases = aliases;
         this._description = description;
         this._category = category;
+        this._usage = usage;
         this._clientPermissions = clientPermissions;
         this._userPermissions = userPermissions;
         this._cooldown = cooldown;
         this._userCooldowns = new Map();
     }
-    CommandBase.prototype.run = function (message, args, guildData) {
+    /**
+     * @param {Message} message
+     * @param {string[]} args
+     * @param {Guild} guildData
+     */
+    CommandBase.prototype.run = function (instance, client, message, args, guildData) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 throw new Error("Command " + this._name + " doesn't provide a execute method");
@@ -80,6 +90,13 @@ var CommandBase = /** @class */ (function () {
     Object.defineProperty(CommandBase.prototype, "description", {
         get: function () {
             return this._description;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CommandBase.prototype, "usage", {
+        get: function () {
+            return this._usage;
         },
         enumerable: false,
         configurable: true

@@ -102,12 +102,6 @@ module.exports = class ReadyEvent extends EventBase {
             event: 'ready'
         });
     }
-    
-    /**
-     * 
-     * @param {BatClient} instance 
-     * @param {Client} client
-     */
 
     run(instance, client) {
         console.log(`Bot » Ready!`);
@@ -120,7 +114,6 @@ module.exports = class ReadyEvent extends EventBase {
 Guild data can be set to anything since it's stored as an Object (key: String, value: Object)
 
 ```js
-const { Message } = require('discord.js');
 const { CommandBase } = require('@imfascinated/bat-framework');
 
 module.exports = class MessageEvent extends CommandBase {
@@ -132,12 +125,7 @@ module.exports = class MessageEvent extends CommandBase {
         });
     }
 
-    /**
-     * @param {Message} message 
-     * @param {string[]} args 
-     */
-
-    async run(message, args, guildData) {
+    async run(instance, client, message, args, guildData) {
         if (args.length < 1) {
             // A simple example below on how to retrieve guild data.
             return message.channel.send(`Your prefix: \`${guildData.getData('prefix')}\``);
@@ -156,7 +144,6 @@ module.exports = class MessageEvent extends CommandBase {
 ---
 Permissions required by the user (or client) to use the command.
 ```js
-const { Message } = require('discord.js');
 const { CommandBase } = require('@imfascinated/bat-framework');
 
 module.exports = class MessageEvent extends CommandBase {
@@ -173,12 +160,7 @@ module.exports = class MessageEvent extends CommandBase {
         });
     }
 
-    /**
-     * @param {Message} message 
-     * @param {string[]} args 
-     */
-
-    async run(message, args, guildData) {}
+    async run(instance, client, message, args, guildData) {}
 }
 ```
 
@@ -186,7 +168,6 @@ module.exports = class MessageEvent extends CommandBase {
 ---
 I don't recommend you use them for cooldowns over 5 mins yet since there is no database integration yet
 ```js
-const { Message } = require('discord.js');
 const { CommandBase } = require('@imfascinated/bat-framework');
 
 module.exports = class MessageEvent extends CommandBase {
@@ -197,15 +178,10 @@ module.exports = class MessageEvent extends CommandBase {
         });
     }
 
-    /**
-     * @param {Message} message 
-     * @param {string[]} args 
-     */
-
-    async run(message, args, guildData) {}
+    async run(instance, client, message, args, guildData) {}
 }
 ```
 
 **Support & Feature Requests**
 ---
-This package is looking for feedback and ideas to help cover more use cases. If you have any ideas feel free to share them me on discord at Fascinated#4735
+This package is looking for feedback and ideas to help cover more use cases. If you have any ideas feel free to share them with me on discord at https://discord.gg/Q2QKADrk2k

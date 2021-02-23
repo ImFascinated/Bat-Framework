@@ -1,4 +1,5 @@
-import { Message, PermissionString } from "discord.js";
+import { Client, Message, PermissionString } from "discord.js";
+import BatClient from "../Client/BatClient";
 import Guild from '../Guild/Guild';
 import CommandCooldown from "./CommandCooldown";
 import ICommandOptions from "./ICommandOptions";
@@ -7,6 +8,7 @@ class CommandBase {
 	private _name: string = '';
 	private _aliases: string[] = [];
 	private _description: string = '';
+	private _usage: string = '';
 	private _category: string = '';
 	private _clientPermissions: Array<PermissionString>;
 	private _userPermissions: Array<PermissionString>;
@@ -15,12 +17,16 @@ class CommandBase {
 								// Guild    User    Their cooldowns
 	private _userCooldowns: Map<String, Map<String, Array<CommandCooldown>>>;
 
+	/**
+	 * @param {ICommandOptions} options 
+	 */
 
 	constructor(options: ICommandOptions) {
 		let {
 			name = '',
 			aliases = [],
 			description = '',
+			usage = '',
 			category = '',
 			clientPermissions = new Array<PermissionString>(),
 			userPermissions = new Array<PermissionString>(),
@@ -31,6 +37,7 @@ class CommandBase {
 		this._aliases = aliases;
 		this._description = description;
 		this._category = category;
+		this._usage = usage;
 		this._clientPermissions = clientPermissions;
 		this._userPermissions = userPermissions;
 
@@ -38,7 +45,13 @@ class CommandBase {
 		this._userCooldowns = new Map();
 	}
 
-	async run(message: Message, args: string[], guildData: Guild) {
+	/**
+	 * @param {Message} message 
+	 * @param {string[]} args 
+	 * @param {Guild} guildData 
+	 */
+
+	async run(instance: BatClient, client: Client, message: Message, args: string[], guildData: Guild) {
 		throw new Error(`Command ${this._name} doesn't provide a execute method`);
 	}
 
@@ -52,6 +65,10 @@ class CommandBase {
 
 	public get description(): string {
 		return this._description;
+	}
+
+	public get usage(): string {
+		return this._usage;
 	}
 
 	public get category(): string {

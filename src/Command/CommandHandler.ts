@@ -91,7 +91,7 @@ class CommandHandler {
 						)
 					}
 				}
-				command.run(message, args, guildData);
+				command.run(instance, client, message, args, guildData);
 			}
 		});
 	}

@@ -129,7 +129,7 @@ var CommandHandler = /** @class */ (function () {
                                             .setDescription("You are still on command cooldown for **" + ms_1.default(left, { long: true }) + "**."))];
                                 }
                             }
-                            command.run(message, args, guildData);
+                            command.run(instance, client, message, args, guildData);
                         }
                         return [2 /*return*/];
                 }

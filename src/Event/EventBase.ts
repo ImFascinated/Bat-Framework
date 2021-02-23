@@ -6,6 +6,10 @@ class EventBase {
 	private _event: string = '';
 	private _type: string = 'on';
 
+	/**
+	* @param {IEventOptions} options
+	*/
+
 	constructor(options: IEventOptions) {
 		let {
 			event = '',
@@ -15,6 +19,12 @@ class EventBase {
 		this._event = event;
 		this._type = type;
 	}
+
+	/**
+	 * @param {BatClient} instance 
+	 * @param {Client} client 
+	 * @param {string[]} args 
+	 */
 
 	public run(instance: BatClient, client: Client, ...args: any) {
 		throw new Error(`The event ${this._type} is missing the run method`);

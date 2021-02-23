@@ -1,5 +1,8 @@
 "use strict";
 var EventBase = /** @class */ (function () {
+    /**
+    * @param {IEventOptions} options
+    */
     function EventBase(options) {
         this._event = '';
         this._type = 'on';
@@ -7,6 +10,11 @@ var EventBase = /** @class */ (function () {
         this._event = event;
         this._type = type;
     }
+    /**
+     * @param {BatClient} instance
+     * @param {Client} client
+     * @param {string[]} args
+     */
     EventBase.prototype.run = function (instance, client) {
         var args = [];
         for (var _i = 2; _i < arguments.length; _i++) {
