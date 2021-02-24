@@ -6,6 +6,7 @@ import ms from 'ms';
 import path from 'path';
 import CommandBase from './CommandBase';
 import Guild from '../Guild/Guild';
+import BatClient from '../Client/BatClient';
 
 type Options = {
 	directory?: string,
@@ -39,7 +40,7 @@ class CommandHandler {
 			}
 
 			if (guildData === undefined) return;
-			const prefix = guildData.getData('prefix')?.toString();
+			const prefix = guildData.prefix;
 			if (prefix === undefined) return;
 			if (!content.startsWith(prefix)) return;
 
@@ -91,7 +92,7 @@ class CommandHandler {
 						)
 					}
 				}
-				command.run(instance, client, message, args, guildData);
+				await command.run(instance, client, message, args, guildData);
 			}
 		});
 	}
@@ -110,41 +111,8 @@ class CommandHandler {
 			silentLoad = false
 		} = options
 
-		return glob(`${directory}\\**\\*.js`).then((events: any[]) => {
-			for (const commandFile of events) {
-				delete require.cache[commandFile];
-				const { name } = path.parse(commandFile);
-				const File = require(commandFile);
-				if (!instance.utils.isClass(File)) throw new TypeError(`BatFramework > Command ${name} doesn't export a class!`);
-				const command = new File(client, name.toLowerCase());
-				if (!(command instanceof CommandBase)) throw new TypeError(`BatFramework > Command ${name} does not extend CommandBase`);
-
-				if (!command.name) {
-					throw new Error(`BatFramework > Command ${name} doesn't have a name, and therefore cannot be used!`)
-				}
-
-				const missing = [];
-
-				if (!command.description) {
-					missing.push("Description");
-				}
-
-				if (!command.category) {
-					missing.push("Category");
-				}
-
-				if (missing.length > 0 && instance.showWarns) {
-					console.warn(`BatFramework > Command "${command.name}" is missing the following properties: ${missing.join(', ')}`)
-				}
-
-				this.registerCommand(command, command.name.toLowerCase());
-			}
-			if (!silentLoad) {
-				if (this._commands.size > 0) {
-					console.log(`BatFramework > Loaded ${this._commands.size} command${this._commands.size > 1 ? 's' : ''}`);
-				}
-			}
-		});
+		this.loadCommands(instance, client, directory, silentLoad);
+		this.loadCommands(instance, client, __dirname + '\\Commands', true);
 	}
 
 	/**
@@ -175,6 +143,46 @@ class CommandHandler {
 			}
 		});
 		return toReturn;
+	}
+
+	public loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean) {
+		if (directory === undefined) return;
+		return glob(`${directory}\\**\\*.js`).then((events: any[]) => {
+			for (const commandFile of events) {
+				delete require.cache[commandFile];
+				const { name } = path.parse(commandFile);
+				const File = require(commandFile);
+				console.log(name);
+				if (!instance.utils.isClass(File)) throw new TypeError(`BatFramework > Command ${name} doesn't export a class!`);
+				const command = new File(client, name.toLowerCase());
+				if (!(command instanceof CommandBase)) throw new TypeError(`BatFramework > Command ${name} does not extend CommandBase`);
+
+				if (!command.name) {
+					throw new Error(`BatFramework > Command ${name} doesn't have a name, and therefore cannot be used!`)
+				}
+
+				const missing = [];
+
+				if (!command.description) {
+					missing.push("Description");
+				}
+
+				if (!command.category) {
+					missing.push("Category");
+				}
+
+				if (missing.length > 0 && instance.showWarns) {
+					console.warn(`BatFramework > Command "${command.name}" is missing the following properties: ${missing.join(', ')}`)
+				}
+
+				this.registerCommand(command, command.name.toLowerCase());
+			}
+			if (!silentLoad) {
+				if (this._commands.size > 0) {
+					console.log(`BatFramework > Loaded ${this._commands.size} command${this._commands.size > 1 ? 's' : ''}`);
+				}
+			}
+		});
 	}
 
 	public get commands(): Map<String, CommandBase> {

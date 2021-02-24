@@ -111,7 +111,7 @@ module.exports = class ReadyEvent extends EventBase {
 
 **Guild Data**
 ---
-Guild data can be set to anything since it's stored as an Object (key: String, value: Object)
+A simple example of how to update the guilds prefix.
 
 ```js
 const { CommandBase } = require('@imfascinated/bat-framework');
@@ -128,14 +128,13 @@ module.exports = class MessageEvent extends CommandBase {
     async run(instance, client, message, args, guildData) {
         if (args.length < 1) {
             // A simple example below on how to retrieve guild data.
-            return message.channel.send(`Your prefix: \`${guildData.getData('prefix')}\``);
+            return message.channel.send(`Your prefix: \`${guildData.prefix}\``);
         }
         const prefix = args[0];
         // A simple example below is how to set guild data.
 
-        await guildData.setData('prefix', prefix, true).then(data => {
-            message.channel.send(`Your guilds prefix has been updated to \`${data.value}\`.`);
-        });
+        await guildData.setPrefix(prefix);
+        message.channel.send(`Your guilds prefix has been updated to \`${prefix}\`.`);
     }
 }
 ```

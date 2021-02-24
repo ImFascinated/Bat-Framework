@@ -57,9 +57,8 @@ var CommandHandler = /** @class */ (function () {
         // TODO: Move this to a built-in event.
         client.on('message', function (message) { return __awaiter(_this, void 0, void 0, function () {
             var guild, member, author, content, channel, guildData, prefix, _a, cmd, args, command, missingPermissions_1, missingPermissions_2, left;
-            var _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         guild = message.guild, member = message.member, author = message.author, content = message.content, channel = message.channel;
                         if (!guild || author.bot)
@@ -68,70 +67,72 @@ var CommandHandler = /** @class */ (function () {
                             return [2 /*return*/];
                         return [4 /*yield*/, instance.guildManager.createGuild(instance, guild.id)];
                     case 1:
-                        _c.sent();
+                        _b.sent();
                         guildData = instance.guildManager.getGuild(guild.id);
                         if (!(guildData === undefined)) return [3 /*break*/, 3];
                         return [4 /*yield*/, instance.guildManager.createGuild(instance, guild.id)];
                     case 2:
-                        _c.sent();
+                        _b.sent();
                         guildData = instance.guildManager.getGuild(guild.id);
-                        _c.label = 3;
+                        _b.label = 3;
                     case 3:
                         if (guildData === undefined)
                             return [2 /*return*/];
-                        prefix = (_b = guildData.getData('prefix')) === null || _b === void 0 ? void 0 : _b.toString();
+                        prefix = guildData.prefix;
                         if (prefix === undefined)
                             return [2 /*return*/];
                         if (!content.startsWith(prefix))
                             return [2 /*return*/];
                         _a = content.slice(prefix.length).trim().split(/ +/g), cmd = _a[0], args = _a.slice(1);
                         command = this.getCommandByName(cmd);
-                        if (command) {
-                            // Checking if command has client permissions, and if it does, check if the client (the bot) has the permission(s)
-                            if (command.clientPermissions) {
-                                missingPermissions_1 = [];
-                                command.clientPermissions.forEach(function (permission) {
-                                    var _a;
-                                    if (!((_a = guild.me) === null || _a === void 0 ? void 0 : _a.hasPermission(permission))) {
-                                        missingPermissions_1.push(permission);
-                                    }
-                                });
-                                if (missingPermissions_1.length !== 0) {
-                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
-                                            .setColor('RED')
-                                            .setDescription("I am missing the permission" + (missingPermissions_1.length > 1 ? 's' : '') + " `" + missingPermissions_1.join(', ') + "` and cannot run this command."))];
+                        if (!command) return [3 /*break*/, 5];
+                        // Checking if command has client permissions, and if it does, check if the client (the bot) has the permission(s)
+                        if (command.clientPermissions) {
+                            missingPermissions_1 = [];
+                            command.clientPermissions.forEach(function (permission) {
+                                var _a;
+                                if (!((_a = guild.me) === null || _a === void 0 ? void 0 : _a.hasPermission(permission))) {
+                                    missingPermissions_1.push(permission);
                                 }
+                            });
+                            if (missingPermissions_1.length !== 0) {
+                                return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                        .setColor('RED')
+                                        .setDescription("I am missing the permission" + (missingPermissions_1.length > 1 ? 's' : '') + " `" + missingPermissions_1.join(', ') + "` and cannot run this command."))];
                             }
-                            // Checking if command has user permissions, and if it does, it checks to see if the user has the permission(s)
-                            if (command.userPermissions) {
-                                missingPermissions_2 = [];
-                                command.userPermissions.forEach(function (permission) {
-                                    if (!(member === null || member === void 0 ? void 0 : member.hasPermission(permission))) {
-                                        missingPermissions_2.push(permission);
-                                    }
-                                });
-                                if (missingPermissions_2.length !== 0) {
-                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
-                                            .setColor('RED')
-                                            .setDescription("You are missing the permission" + (missingPermissions_2.length > 1 ? 's' : '') + " `" + missingPermissions_2.join(', ') + "` and cannot use this command."))];
-                                }
-                            }
-                            if (command.cooldown) {
-                                if (command.cooldown <= 0)
-                                    return [2 /*return*/];
-                                left = command.getUserCooldown(guild.id, member.id);
-                                if (left <= 0) {
-                                    command.setUserCooldown(guild.id, member.id);
-                                }
-                                if (left > 0) {
-                                    return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
-                                            .setColor('RED')
-                                            .setDescription("You are still on command cooldown for **" + ms_1.default(left, { long: true }) + "**."))];
-                                }
-                            }
-                            command.run(instance, client, message, args, guildData);
                         }
-                        return [2 /*return*/];
+                        // Checking if command has user permissions, and if it does, it checks to see if the user has the permission(s)
+                        if (command.userPermissions) {
+                            missingPermissions_2 = [];
+                            command.userPermissions.forEach(function (permission) {
+                                if (!(member === null || member === void 0 ? void 0 : member.hasPermission(permission))) {
+                                    missingPermissions_2.push(permission);
+                                }
+                            });
+                            if (missingPermissions_2.length !== 0) {
+                                return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                        .setColor('RED')
+                                        .setDescription("You are missing the permission" + (missingPermissions_2.length > 1 ? 's' : '') + " `" + missingPermissions_2.join(', ') + "` and cannot use this command."))];
+                            }
+                        }
+                        if (command.cooldown) {
+                            if (command.cooldown <= 0)
+                                return [2 /*return*/];
+                            left = command.getUserCooldown(guild.id, member.id);
+                            if (left <= 0) {
+                                command.setUserCooldown(guild.id, member.id);
+                            }
+                            if (left > 0) {
+                                return [2 /*return*/, channel.send(new discord_js_1.MessageEmbed()
+                                        .setColor('RED')
+                                        .setDescription("You are still on command cooldown for **" + ms_1.default(left, { long: true }) + "**."))];
+                            }
+                        }
+                        return [4 /*yield*/, command.run(instance, client, message, args, guildData)];
+                    case 4:
+                        _b.sent();
+                        _b.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         }); });
@@ -144,40 +145,9 @@ var CommandHandler = /** @class */ (function () {
      * @private
      */
     CommandHandler.prototype.init = function (instance, client, options) {
-        var _this = this;
         var directory = options.directory, _a = options.silentLoad, silentLoad = _a === void 0 ? false : _a;
-        return glob(directory + "\\**\\*.js").then(function (events) {
-            for (var _i = 0, events_1 = events; _i < events_1.length; _i++) {
-                var commandFile = events_1[_i];
-                delete require.cache[commandFile];
-                var name_1 = path_1.default.parse(commandFile).name;
-                var File_1 = require(commandFile);
-                if (!instance.utils.isClass(File_1))
-                    throw new TypeError("BatFramework > Command " + name_1 + " doesn't export a class!");
-                var command = new File_1(client, name_1.toLowerCase());
-                if (!(command instanceof CommandBase_1.default))
-                    throw new TypeError("BatFramework > Command " + name_1 + " does not extend CommandBase");
-                if (!command.name) {
-                    throw new Error("BatFramework > Command " + name_1 + " doesn't have a name, and therefore cannot be used!");
-                }
-                var missing = [];
-                if (!command.description) {
-                    missing.push("Description");
-                }
-                if (!command.category) {
-                    missing.push("Category");
-                }
-                if (missing.length > 0 && instance.showWarns) {
-                    console.warn("BatFramework > Command \"" + command.name + "\" is missing the following properties: " + missing.join(', '));
-                }
-                _this.registerCommand(command, command.name.toLowerCase());
-            }
-            if (!silentLoad) {
-                if (_this._commands.size > 0) {
-                    console.log("BatFramework > Loaded " + _this._commands.size + " command" + (_this._commands.size > 1 ? 's' : ''));
-                }
-            }
-        });
+        this.loadCommands(instance, client, directory, silentLoad);
+        this.loadCommands(instance, client, __dirname + '\\Commands', true);
     };
     /**
      * @description Registers the {CommandBase} and adds it into the _commands Map
@@ -207,6 +177,44 @@ var CommandHandler = /** @class */ (function () {
             }
         });
         return toReturn;
+    };
+    CommandHandler.prototype.loadCommands = function (instance, client, directory, silentLoad) {
+        var _this = this;
+        if (directory === undefined)
+            return;
+        return glob(directory + "\\**\\*.js").then(function (events) {
+            for (var _i = 0, events_1 = events; _i < events_1.length; _i++) {
+                var commandFile = events_1[_i];
+                delete require.cache[commandFile];
+                var name_1 = path_1.default.parse(commandFile).name;
+                var File_1 = require(commandFile);
+                console.log(name_1);
+                if (!instance.utils.isClass(File_1))
+                    throw new TypeError("BatFramework > Command " + name_1 + " doesn't export a class!");
+                var command = new File_1(client, name_1.toLowerCase());
+                if (!(command instanceof CommandBase_1.default))
+                    throw new TypeError("BatFramework > Command " + name_1 + " does not extend CommandBase");
+                if (!command.name) {
+                    throw new Error("BatFramework > Command " + name_1 + " doesn't have a name, and therefore cannot be used!");
+                }
+                var missing = [];
+                if (!command.description) {
+                    missing.push("Description");
+                }
+                if (!command.category) {
+                    missing.push("Category");
+                }
+                if (missing.length > 0 && instance.showWarns) {
+                    console.warn("BatFramework > Command \"" + command.name + "\" is missing the following properties: " + missing.join(', '));
+                }
+                _this.registerCommand(command, command.name.toLowerCase());
+            }
+            if (!silentLoad) {
+                if (_this._commands.size > 0) {
+                    console.log("BatFramework > Loaded " + _this._commands.size + " command" + (_this._commands.size > 1 ? 's' : ''));
+                }
+            }
+        });
     };
     Object.defineProperty(CommandHandler.prototype, "commands", {
         get: function () {

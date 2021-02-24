@@ -17,7 +17,10 @@ class GuildManager {
 				const data = await GuildSchema.find();
 				data.forEach(data => {
 					if (data === null) return;
-					const guild = new Guild(data.id);
+					const guild = new Guild(data.id, instance, {
+						prefix: instance.defaultPrefix,
+						disabledCommands: new Array<String>()
+					});
 					data.get('data').forEach((data: { key: string; value: Object }) => {
 						guild.setData(data.key, data.value);
 					})
@@ -51,7 +54,10 @@ class GuildManager {
 			data = await GuildSchema.findOne({ id: id });
 		}
 		if (data === null) return;
-		const guild = new Guild(id);
+		const guild = new Guild(id, instance, {
+			prefix: data.get('prefix'),
+			disabledCommands: data.get('disabledCommands')
+		});
 		data.get('data').forEach((data: { key: string; value: Object }) => {
 			guild.setData(data.key, data.value);
 		})
@@ -71,7 +77,10 @@ class GuildManager {
 		if (this._guilds.has(id)) {
 			return;
 		}
-		const guild: Guild = new Guild(id);
+		const guild = new Guild(id, instance, {
+			prefix: instance.defaultPrefix,
+			disabledCommands: new Array<String>()
+		});
 		await guild.setData('prefix', instance.defaultPrefix);
 
 		this._guilds.set(id, guild);
@@ -82,6 +91,8 @@ class GuildManager {
 			if (!data) {
 				const toSave = new GuildSchema({
 					id: id,
+					prefix: instance.defaultPrefix,
+					disabledCommands: new Array<String>(),
 					data: []
 				});
 				return toSave.save();

@@ -8,6 +8,8 @@ var mongoose_1 = __importDefault(require("mongoose"));
  */
 var schema = new mongoose_1.default.Schema({
     id: String,
+    prefix: String,
+    disabledCommands: Array,
     data: Array
 });
 module.exports = mongoose_1.default.model('batframework-guilds', schema);

@@ -1,6 +1,7 @@
 import { Client } from 'discord.js';
 import BatFramework from '../Client/BatClient';
 import CommandBase from './CommandBase';
+import BatClient from '../Client/BatClient';
 declare class CommandHandler {
     private _commands;
     /**
@@ -29,6 +30,7 @@ declare class CommandHandler {
      * @returns CommandBase
      */
     getCommandByName(name: string): CommandBase | undefined;
+    loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean): any;
     get commands(): Map<String, CommandBase>;
 }
 export = CommandHandler;

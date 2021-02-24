@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema({
 	id: String,
+	prefix: String,
+	disabledCommands: Array,
 	data: Array
 });
 

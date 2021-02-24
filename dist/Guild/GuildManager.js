@@ -61,7 +61,10 @@ var GuildManager = /** @class */ (function () {
                         data.forEach(function (data) {
                             if (data === null)
                                 return;
-                            var guild = new Guild_1.default(data.id);
+                            var guild = new Guild_1.default(data.id, instance, {
+                                prefix: instance.defaultPrefix,
+                                disabledCommands: new Array()
+                            });
                             data.get('data').forEach(function (data) {
                                 guild.setData(data.key, data.value);
                             });
@@ -114,7 +117,10 @@ var GuildManager = /** @class */ (function () {
                     case 4:
                         if (data === null)
                             return [2 /*return*/];
-                        guild = new Guild_1.default(id);
+                        guild = new Guild_1.default(id, instance, {
+                            prefix: data.get('prefix'),
+                            disabledCommands: data.get('disabledCommands')
+                        });
                         data.get('data').forEach(function (data) {
                             guild.setData(data.key, data.value);
                         });
@@ -144,7 +150,10 @@ var GuildManager = /** @class */ (function () {
                         if (this._guilds.has(id)) {
                             return [2 /*return*/];
                         }
-                        guild = new Guild_1.default(id);
+                        guild = new Guild_1.default(id, instance, {
+                            prefix: instance.defaultPrefix,
+                            disabledCommands: new Array()
+                        });
                         return [4 /*yield*/, guild.setData('prefix', instance.defaultPrefix)];
                     case 3:
                         _a.sent();
@@ -155,6 +164,8 @@ var GuildManager = /** @class */ (function () {
                                 if (!data) {
                                     var toSave = new GuildSchema_1.default({
                                         id: id,
+                                        prefix: instance.defaultPrefix,
+                                        disabledCommands: new Array(),
                                         data: []
                                     });
                                     return toSave.save();

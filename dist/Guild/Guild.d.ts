@@ -1,11 +1,16 @@
+import BatClient from '../Client/BatClient';
+import CommandBase from '../Command/CommandBase';
+import IGuildOptions from './IGuildOptions';
 declare class Guild {
     private _id;
+    private _prefix;
+    private _disabledCommands;
     private _data;
     /**
-     * @description Constructs the {Guild} instance
+     * @description Constructs the {Guild} instancee
      * @param {string} id - Guild id
      */
-    constructor(id: string);
+    constructor(id: string, instance: BatClient, options: IGuildOptions);
     /**
      * @description Sets data in the {Guild} object
      * @param {string} key - The data name (example: prefix)
@@ -25,5 +30,10 @@ declare class Guild {
      */
     save(log?: boolean): Promise<void>;
     get id(): string;
+    get prefix(): string;
+    setPrefix(prefix: string): void;
+    disableCommand(command: CommandBase): void;
+    enableCommand(command: CommandBase): void;
+    isCommandEnabled(command: CommandBase): boolean;
 }
 export = Guild;

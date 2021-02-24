@@ -41,12 +41,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var GuildSchema_1 = __importDefault(require("./GuildSchema"));
 var Guild = /** @class */ (function () {
     /**
-     * @description Constructs the {Guild} instance
+     * @description Constructs the {Guild} instancee
      * @param {string} id - Guild id
      */
-    function Guild(id) {
+    function Guild(id, instance, options) {
         this._data = new Map();
         this._id = id;
+        var _a = options.prefix, prefix = _a === void 0 ? instance.defaultPrefix : _a, _b = options.disabledCommands, disabledCommands = _b === void 0 ? new Array() : _b;
+        this._prefix = prefix;
+        this._disabledCommands = disabledCommands;
     }
     /**
      * @description Sets data in the {Guild} object
@@ -99,7 +102,11 @@ var Guild = /** @class */ (function () {
                         this._data.forEach(function (key, value) {
                             updateData.push({ key: value, value: key });
                         });
+                        data.prefix = this._prefix;
+                        data.disabledCommands = this._disabledCommands;
                         data.data = updateData;
+                        data.markModified('prefix');
+                        data.markModified('disabledCommands');
                         data.markModified('data');
                         data.save();
                         if (log) {
@@ -117,6 +124,38 @@ var Guild = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Guild.prototype, "prefix", {
+        get: function () {
+            return this._prefix;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Guild.prototype.setPrefix = function (prefix) {
+        this._prefix = prefix;
+    };
+    Guild.prototype.disableCommand = function (command) {
+        this._disabledCommands.push(command.name);
+    };
+    Guild.prototype.enableCommand = function (command) {
+        var toKeep = new Array();
+        this._disabledCommands.forEach(function (cmd) {
+            if (cmd !== command.name)
+                return;
+            toKeep.push(cmd);
+        });
+        this._disabledCommands = toKeep;
+    };
+    Guild.prototype.isCommandEnabled = function (command) {
+        var isEnabled = true;
+        this._disabledCommands.forEach(function (cmd) {
+            if (cmd == command.name) {
+                isEnabled = false;
+                return isEnabled;
+            }
+        });
+        return isEnabled;
+    };
     return Guild;
 }());
 module.exports = Guild;
