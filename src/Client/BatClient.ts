@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import CommandHandler from "../Command/CommandHandler";
 import EventHandler from "../Event/EventHandler";
 import GuildManager from "../Guild/GuildManager";
+import FeatureHandler from "../Feature/FeatureHandler";
 import Utils from "../Utils/Utils";
 import IBatClientOptions from "./IBatClientOptions";
 
@@ -16,10 +17,13 @@ class BatClient extends EventEmitter {
 	private _eventHandler: EventHandler;
 	private _commandsDirectory: string = 'commands';
 	private _commandHandler: CommandHandler;
+	private _featuresDirectory: string = 'features';
+	private _featuresHandler: FeatureHandler;
 	private _utils: Utils;
 	private _guildManager: GuildManager;
 	private _autoSaveInterval: number = 300000;
 	private _forceLoadGuilds: boolean = false;
+	private _botOwners = new Array<String>();
 
 	private _mongo = '';
 	private _mongoConnection: Connection | null = null;
@@ -40,9 +44,11 @@ class BatClient extends EventEmitter {
 			showWarns = true,
 			commandsDirectory = 'commands',
 			eventsDirectory = 'events',
+			featuresDirectory = 'features',
 			autoSaveInterval = 300000,
 			databaseOptions,
-			forceLoadGuilds = false
+			forceLoadGuilds = false,
+			botOwners = []
 		} = options;
 
 		if (module && require.main) {
@@ -50,19 +56,24 @@ class BatClient extends EventEmitter {
 			if (path) {
 				commandsDirectory = `${path}\\${commandsDirectory || this._commandsDirectory}`
 				eventsDirectory = `${path}\\${eventsDirectory || this._eventsDirectory}`
+				featuresDirectory = `${path}\\${featuresDirectory || this._featuresDirectory}`
 			}
 		}
 
 		this._showWarns = showWarns;
 		this._commandsDirectory = commandsDirectory;
 		this._eventsDirectory = eventsDirectory;
+		this._featuresDirectory = featuresDirectory;
 
 		this._eventHandler = new EventHandler(this, client);
 		this._commandHandler = new CommandHandler(this, client);
+		this._featuresHandler = new FeatureHandler(this, client);
 		this._guildManager = new GuildManager(this, client);
 
 		this._autoSaveInterval = autoSaveInterval;
 		this._forceLoadGuilds = forceLoadGuilds;
+
+		this._botOwners = botOwners;
 
 		this._utils = new Utils();
 
@@ -110,6 +121,14 @@ class BatClient extends EventEmitter {
 		return this._commandHandler;
 	}
 
+	public get featuresDirectory(): string {
+		return this._featuresDirectory;
+	}
+
+	public get featuresHandler(): FeatureHandler {
+		return this._featuresHandler;
+	}
+
 	public get guildManager(): GuildManager {
 		return this._guildManager;
 	}
@@ -120,6 +139,10 @@ class BatClient extends EventEmitter {
 
 	public get forceLoadGuilds(): boolean {
 		return this._forceLoadGuilds;
+	}
+
+	public get botOwners(): Array<String> {
+		return this._botOwners;
 	}
 
 	public get utils(): Utils {

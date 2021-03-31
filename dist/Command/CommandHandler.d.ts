@@ -19,18 +19,18 @@ declare class CommandHandler {
      */
     private init;
     /**
-     * @description Registers the {CommandBase} and adds it into the _commands Map
-     * @param {CommandBase} command - The {CommandBase} passed into the method
-     * @param {string} name - The commands name as lower case
-     */
-    registerCommand(command: CommandBase, name: string): void;
-    /**
      * @description Finds the {CommandBase} that has the provided name
      * @param {string} name - Provided name
      * @returns CommandBase
      */
     getCommandByName(name: string): CommandBase | undefined;
-    loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean): any;
+    loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean): Promise<any>;
+    /**
+     * @description Registers the {CommandBase} and adds it into the _commands Map
+     * @param {CommandBase} command - The {CommandBase} passed into the method
+     * @param {string} name - The commands name as lower case
+     */
+    registerCommand(command: CommandBase, name: string): void;
     get commands(): Map<String, CommandBase>;
 }
 export = CommandHandler;

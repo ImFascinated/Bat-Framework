@@ -8,4 +8,5 @@ export default interface ICommandOptions {
     clientPermissions?: Array<PermissionString>;
     userPermissions?: Array<PermissionString>;
     cooldown?: number;
+    botOwnerOnly?: boolean;
 }

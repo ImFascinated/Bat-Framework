@@ -47,6 +47,15 @@ class CommandHandler {
 			const [cmd, ...args] = content.slice(prefix.length).trim().split(/ +/g);
 			const command: CommandBase | undefined = this.getCommandByName(cmd);
 			if (command) {
+				// Checking to see if the command is only usable by the bot owners
+				if (command.botOwnerOnly) {
+					if (!instance.botOwners.includes(member.user.id)) {
+						return (await channel.send(
+							`You do not own this bot and cannot run this command.\n*This message will be automatically deleted in 5 seconds.*`
+						)).delete({ timeout: 5000 })
+					} 
+				}
+
 				// Checking if command has client permissions, and if it does, check if the client (the bot) has the permission(s)
 				if (command.clientPermissions) {
 					const missingPermissions: string[] = [];
@@ -56,10 +65,9 @@ class CommandHandler {
 						}
 					})
 					if (missingPermissions.length !== 0) {
-						return channel.send(new MessageEmbed()
-							.setColor('RED')
-							.setDescription(`I am missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot run this command.`)
-						)
+						return (await channel.send(
+							`I am missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot run this command.\n*This message will be automatically deleted in 5 seconds.*`
+						)).delete({ timeout: 5000 })
 					}
 				}
 
@@ -72,10 +80,9 @@ class CommandHandler {
 						}
 					})
 					if (missingPermissions.length !== 0) {
-						return channel.send(new MessageEmbed()
-							.setColor('RED')
-							.setDescription(`You are missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot use this command.`)
-						)
+						return (await channel.send(
+							`You are missing the permission${missingPermissions.length > 1 ? 's' : ''} \`${missingPermissions.join(', ')}\` and cannot use this command.\n*This message will be automatically deleted in 5 seconds.*`
+						)).delete({ timeout: 5000 })
 					}
 				}
 
@@ -86,10 +93,9 @@ class CommandHandler {
 						command.setUserCooldown(guild.id, member.id);
 					}
 					if (left > 0) {
-						return channel.send(new MessageEmbed()
-							.setColor('RED')
-							.setDescription(`You are still on command cooldown for **${ms(left, { long: true })}**.`)
-						)
+						return (await channel.send(
+							`You are still on command cooldown for **${ms(left, { long: true })}**.\n*This message will be automatically deleted in 5 seconds.*`
+						)).delete({ timeout: 5000 })
 					}
 				}
 				await command.run(instance, client, message, args, guildData);
@@ -105,24 +111,14 @@ class CommandHandler {
 	 * @private
 	 */
 
-	private init(instance: BatFramework, client: Client, options: Options) {
+	private async init(instance: BatFramework, client: Client, options: Options) {
 		let {
 			directory,
 			silentLoad = false
 		} = options
 
-		this.loadCommands(instance, client, directory, silentLoad);
-		this.loadCommands(instance, client, __dirname + '\\Commands', true);
-	}
-
-	/**
-	 * @description Registers the {CommandBase} and adds it into the _commands Map
-	 * @param {CommandBase} command - The {CommandBase} passed into the method
-	 * @param {string} name - The commands name as lower case
-	 */
-
-	public registerCommand(command: CommandBase, name: string) {
-		this._commands.set(name, command)
+		await this.loadCommands(instance, client, directory, silentLoad);
+		await this.loadCommands(instance, client, `${__dirname}${path.sep}Commands`, true);
 	}
 
 	/**
@@ -145,17 +141,16 @@ class CommandHandler {
 		return toReturn;
 	}
 
-	public loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean) {
+	public async loadCommands(instance: BatClient, client: Client, directory: string | undefined, silentLoad?: boolean) {
 		if (directory === undefined) return;
-		return glob(`${directory}\\**\\*.js`).then((events: any[]) => {
+		return glob(`${directory}\\**\\*.js`).then(async (events: any[]) => {
 			for (const commandFile of events) {
 				delete require.cache[commandFile];
 				const { name } = path.parse(commandFile);
-				const File = require(commandFile);
-				console.log(name);
+				let File = await require(commandFile);
 				if (!instance.utils.isClass(File)) throw new TypeError(`BatFramework > Command ${name} doesn't export a class!`);
-				const command = new File(client, name.toLowerCase());
-				if (!(command instanceof CommandBase)) throw new TypeError(`BatFramework > Command ${name} does not extend CommandBase`);
+				const command = await new File(client, name.toLowerCase());
+				if (!(await command instanceof CommandBase)) throw new TypeError(`BatFramework > Command ${name} does not extend CommandBase`);
 
 				if (!command.name) {
 					throw new Error(`BatFramework > Command ${name} doesn't have a name, and therefore cannot be used!`)
@@ -175,7 +170,7 @@ class CommandHandler {
 					console.warn(`BatFramework > Command "${command.name}" is missing the following properties: ${missing.join(', ')}`)
 				}
 
-				this.registerCommand(command, command.name.toLowerCase());
+				this.registerCommand(await command, await command.name.toLowerCase());
 			}
 			if (!silentLoad) {
 				if (this._commands.size > 0) {
@@ -184,6 +179,17 @@ class CommandHandler {
 			}
 		});
 	}
+
+	/**
+	 * @description Registers the {CommandBase} and adds it into the _commands Map
+	 * @param {CommandBase} command - The {CommandBase} passed into the method
+	 * @param {string} name - The commands name as lower case
+	 */
+
+	public registerCommand(command: CommandBase, name: string) {
+		this._commands.set(name, command)
+	}
+
 
 	public get commands(): Map<String, CommandBase> {
 		return this._commands;

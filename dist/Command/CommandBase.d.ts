@@ -10,6 +10,7 @@ declare class CommandBase {
     private _category;
     private _clientPermissions;
     private _userPermissions;
+    private _botOwnerOnly;
     private _cooldown;
     private _userCooldowns;
     /**
@@ -29,6 +30,7 @@ declare class CommandBase {
     get category(): string;
     get clientPermissions(): Array<PermissionString> | undefined;
     get userPermissions(): Array<PermissionString> | undefined;
+    get botOwnerOnly(): boolean;
     get cooldown(): number;
     getUserCooldown(guildId: string, userId: string): number;
     setUserCooldown(guildId: string, userId: string): void;

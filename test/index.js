@@ -6,6 +6,7 @@ const client = new Client({ ws: { intents: Intents.ALL } });
 const Bot = new BatClient(client, {
 	commandsDirectory: 'Commands',
 	eventsDirectory: 'Events',
+	featuresDirectory: 'Features',
 	showWarns: true,
 	autoSaveInterval: 300000,
 	databaseOptions: {

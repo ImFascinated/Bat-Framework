@@ -12,6 +12,7 @@ class CommandBase {
 	private _category: string = '';
 	private _clientPermissions: Array<PermissionString>;
 	private _userPermissions: Array<PermissionString>;
+	private _botOwnerOnly: boolean = false;
 
 	private _cooldown: number = 0;
 								// Guild    User    Their cooldowns
@@ -30,7 +31,8 @@ class CommandBase {
 			category = '',
 			clientPermissions = new Array<PermissionString>(),
 			userPermissions = new Array<PermissionString>(),
-			cooldown = 0
+			cooldown = 0,
+			botOwnerOnly = false
 		} = options;
 
 		this._name = name;
@@ -40,6 +42,7 @@ class CommandBase {
 		this._usage = usage;
 		this._clientPermissions = clientPermissions;
 		this._userPermissions = userPermissions;
+		this._botOwnerOnly = botOwnerOnly;
 
 		this._cooldown = cooldown;
 		this._userCooldowns = new Map();
@@ -81,6 +84,10 @@ class CommandBase {
 
 	public get userPermissions(): Array<PermissionString> | undefined {
 		return this._userPermissions;
+	}
+
+	public get botOwnerOnly(): boolean {
+		return this._botOwnerOnly;
 	}
 
 	public get cooldown(): number {

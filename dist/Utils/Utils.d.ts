@@ -1,5 +1,5 @@
 declare class Utils {
-    isClass(input: any): boolean;
+    isClass(obj: any): boolean;
     get directory(): string | undefined;
 }
 export = Utils;

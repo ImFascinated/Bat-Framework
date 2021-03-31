@@ -1,12 +1,12 @@
 "use strict";
-var EventBase = /** @class */ (function () {
+class EventBase {
     /**
     * @param {IEventOptions} options
     */
-    function EventBase(options) {
+    constructor(options) {
         this._event = '';
         this._type = 'on';
-        var _a = options.event, event = _a === void 0 ? '' : _a, _b = options.type, type = _b === void 0 ? 'on' : _b;
+        let { event = '', type = 'on' } = options;
         this._event = event;
         this._type = type;
     }
@@ -15,27 +15,14 @@ var EventBase = /** @class */ (function () {
      * @param {Client} client
      * @param {string[]} args
      */
-    EventBase.prototype.run = function (instance, client) {
-        var args = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            args[_i - 2] = arguments[_i];
-        }
-        throw new Error("The event " + this._type + " is missing the run method");
-    };
-    Object.defineProperty(EventBase.prototype, "event", {
-        get: function () {
-            return this._event;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(EventBase.prototype, "type", {
-        get: function () {
-            return this._type;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return EventBase;
-}());
+    run(instance, client, ...args) {
+        throw new Error(`The event ${this._type} is missing the run method`);
+    }
+    get event() {
+        return this._event;
+    }
+    get type() {
+        return this._type;
+    }
+}
 module.exports = EventBase;

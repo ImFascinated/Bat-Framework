@@ -3,7 +3,7 @@ import BatClient from "../../../Client/BatClient";
 import Guild from "../../../Guild/Guild";
 import CommandBase from "../../CommandBase";
 
-class Command extends CommandBase {
+module.exports = class CommandCommand extends CommandBase {
 	constructor() {
 		super({
 			name: 'command',
@@ -34,5 +34,3 @@ class Command extends CommandBase {
 		}
 	}
 }
-
-export = Command;

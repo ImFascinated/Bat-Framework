@@ -31,6 +31,7 @@ const client = new Discord.Client();
 const Bot = new Client(client, {
     commandsDirectory: 'Commands',
     eventsDirectory: 'Events',
+    featuresDirectory: 'Features',
     showWarns: true,
     autoSaveInterval: 300000, // Guild auto save interval
     forceLoadGuilds: false, // Whether to load all guilds (in the database) on boot
@@ -39,7 +40,10 @@ const Bot = new Client(client, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false
-    }
+    },
+    botOwners: [
+        'owner id', 'another owner'
+    ]
 });
 // Set your Mongo URI path so the framework can use it.
 Bot.setMongoPath(process.env.MONGO_URI);
@@ -63,12 +67,13 @@ This is a simple test command to see if the framework is working.
 const { Message } = require('discord.js');
 const { CommandBase } = require('@imfascinated/bat-framework');
 
-module.exports = class MessageEvent extends CommandBase {
+module.exports = class TestCommand extends CommandBase {
     constructor() {
         super({
             name: 'test', // Command name
             description: 'This a test command!', // Command description
-            alises: ['testy'] // Command aliases
+            aliases: ['testy'], // Command aliases
+            botOwnerOnly: true
         });
     }
 
@@ -178,6 +183,30 @@ module.exports = class MessageEvent extends CommandBase {
     }
 
     async run(instance, client, message, args, guildData) {}
+}
+```
+
+**Features**
+---
+```js
+const { Client } = require('discord.js');
+const { BatClient, FeatureBase } = require('@imfascinated/bat-framework');
+
+module.exports = class MessageFeature extends FeatureBase {
+    constructor() {
+        super();
+    }
+
+    /**
+     * @param {BatClient} instance 
+     * @param {Client} client 
+     */
+
+    async init(instance, client) {
+        client.on('message', (message) => {
+            console.log("msg")
+        })
+    }
 }
 ```
 

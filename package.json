@@ -1,6 +1,6 @@
 {
   "name": "@imfascinated/bat-framework",
-  "version": "0.0.21-DEV",
+  "version": "0.0.23-DEV",
   "description": "A simple and powerful discord.js framework.",
   "main": "dist/index.js",
   "author": "ImFascinated",
@@ -24,6 +24,13 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^14.14.30"
   },
+  "keywords": [
+    "discord.js",
+    "discord",
+    "bot",
+    "framework",
+    "commands"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ImFascinated/Bat-Framework"
